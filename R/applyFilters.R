@@ -49,8 +49,6 @@ applyFilters <- function(roster) {
     
     keep <- tolower(prio)
     
-    drop <- NULL
-    
   } else if (roster$indicator == "pollinators") {
     
     poll <- sampSubset("pollinators",
@@ -61,13 +59,11 @@ applyFilters <- function(roster) {
     
     keep <- tolower(poll)
     
-    drop <- tolower(pollDrop)
+    keep <- keep[-which(keep %in% pollDrop)]
     
   } else {
     
     keep <- NULL
-    
-    drop <- NULL
     
   }
   
@@ -83,7 +79,7 @@ applyFilters <- function(roster) {
                                    maxEndGap = 0,
                                    maxMiddleGap = 10, 
                                    keepSpecies = keep, 
-                                   removeSpecies = drop,
+                                   removeSpecies = NULL,
                                    ClipFirst = TRUE, 
                                    ClipLast = TRUE)
   
