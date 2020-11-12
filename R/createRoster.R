@@ -39,7 +39,8 @@
 #' @export
 #' 
 
-createRoster <- function(modPath = "/data-s3/occmods/", 
+createRoster <- function(index,
+                         modPath = "/data-s3/occmods/", 
                          datPath,
                          metaPath,
                          ver = "2017_Charlie",
@@ -52,7 +53,8 @@ createRoster <- function(modPath = "/data-s3/occmods/",
                          outPath,
                          clipBy = "species") {
   
-  df <- data.frame(modPath = modPath,
+  df <- data.frame(index = index,
+                   modPath = modPath,
                    datPath = datPath,
                    metaPath = metaPath,
                    ver = ver, 

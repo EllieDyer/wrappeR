@@ -1,0 +1,78 @@
+---
+title: "Usage"
+author: "Rob Boyd"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Usage}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(plyr)
+library(BRCindicators)
+source("C:/Users/robboy/Documents/tempTrendSummaries.R")
+source("C:/Users/robboy/Documents/wrappeR/R/tempapplyFilters.R")
+source("C:/Users/robboy/Documents/wrappeR/R/tempsampSubset.R")
+source("C:/Users/robboy/Documents/wrappeR/R/createRoster.R")
+source("C:/Users/robboy/Documents/wrappeR/R/calcMSI.R")
+```
+# Introduction
+
+After fitting occupancy models to estimate changes in individual species' distributions, we usually want to combine these time-series into a multispecies indicicator (MSI). The R packages TrendSummaries and BRCindicators contain a number of functions that can be used to generate MSIs, but they don't talk to each other very easily. Here, I introduce wrappeR, an R package that wraps around TrendSummaries and BRCindicators, allowing users to quickly and flexibly produce MSIs from occupancy model outputs. As an example I produce a MSI for pollinators in the UK.  
+
+# Example workflow 
+
+There are three steps to a wrappeR workflow: 1) create a roster to specify which filters should be applied to the occupancy model outputs; 2) apply those filters; and 3) create the MSI using the filtered outputs.
+
+## Step 1: Create a roster 
+
+It may be necessary to filter the occupancy model outputs before they can be used to create a MSI. For example, you may want to clip the individual species' time series such that they only contribute to the MSI after the first year for which they have any records, and before the final year for which they have any records. Or you may want to select a subset of species, such as pollinators or priority species, for inclusion. Later I will introduce the function applyFilters which, as you can probably guess, applies filters to the occupancy model outputs. applyFilters works on one taxonomic group at a time. If an identical set of filters were to be applied to each taxonomic group, then it would be simple to use e.g. lapply to apply the function to all groups of interest. However, you may want to apply different filters to different groups; for example, you may want outputs for the whole of the UK for one group, but only Great Britain for another which has not been recorded in Northern Ireland. To enable the use of lapply where multiple arguments (filters) vary, we create a roster that can be passed to applyFilters. The roster is a list of 1-row dataframes in which each column corresponds to a filter. Rosters can be created using the createRoster function:
+
+```{r, eval = TRUE}
+roster <- createRoster(index = 1:2,
+                       datPath = rep("D:/BRCIndicatorWorkflow/inData/", 2),
+                       modPath = rep("D:/BRCIndicatorWorkflow/modelOutputs/", 2), 
+                       metaPath = rep("D:/BRCIndicatorWorkflow/metaData/", 2),
+                       ver = rep("", 2),  
+                       indicator = rep("pollinators", 2),
+                       region = rep("GB", 2),
+                       nSamps = rep(1000, 2),
+                       minObs = rep(50, 2),
+                       write = rep(FALSE, 2), 
+                       outPath = rep(0, 2),
+                       clipBy = rep("species", 2),
+                       group = c("Bees", "Hoverflies"))
+
+str(roster)
+```
+Each argument passed to createRoster should be a vector with a length equal to the number of taxonomic groups to be included in the MSI. This way roster can be passed to the applyFilters function which will filter the outputs for each taxonomic group according to the other columns in roster:
+```{r, eval = TRUE, warning = FALSE, results = "hide"}
+#filterDat <- rbind.fill(lapply(roster,
+#                    applyFilters))
+
+```
+At this stage we have produced a set of filtered occupancy model outputs for the chosen taxa in the following format:
+```{r, eval = TRUE}
+load("D:/BRCIndicatorWorkflow/filterDat.rdata")
+#str(filterDat)
+```
+Now we can pass the filtered outputs to the calcMSI function which produces a MSI using a user-defined method. We will use the standard lambda indicator method:
+```{r, eval = TRUE, warning = FALSE}
+ind <- calcMSI(dat = filterDat, 
+               method = "lambda", 
+               write = FALSE, 
+               outPath = NULL,
+               plotLabel = "Pollinators")
+
+```
+```{r, eval = TRUE}
+str(ind)
+```
