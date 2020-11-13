@@ -27,7 +27,8 @@ applyFilters <- function(roster) {
   
   samp_post$species <- tolower(samp_post$species)
   
-  meta <- extractMeta(inPath = paste0(roster$datPath, roster$group, "/", roster$ver, "/"),
+  meta <- extractMeta(inPath = paste0("/data-s3/occmods/",
+                                                roster$group, "/input_data/", roster$ver, "/"),
                       group = as.character(roster$group),
                       outPath = roster$metaPath,
                       write = F)
