@@ -31,7 +31,8 @@ applyFilters <- function(roster) {
                                                 roster$group, "/input_data/", roster$ver, "/"),
                       group = as.character(roster$group),
                       outPath = roster$metaPath,
-                      write = F)
+                      write = F,
+                      region = roster$region)
   
   meta[ ,1] <- tolower(meta$Species)
   
