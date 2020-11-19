@@ -137,16 +137,16 @@ extractMeta <- function(inPath, group, outPath, write, region) {
 
 plotIndicator <- function(minYear, maxYear, label, plotType, st, lt, ind) {
   
-  n <- max(ind$summary$Species_Number)
+  n <- max(summary$Species_Number)
   
-  nSpec <- ind$summary$Species_Number
+  nSpec <- summary$Species_Number
   
   years <- minYear:maxYear
   
   if (plotType == "indicator") {
     
-    p1 <- ggplot(data = NULL, aes(x= years, y= ind$summary$indicator)) +
-      geom_ribbon(data= NULL, aes(ymax=ind$summary$upper, ymin = ind$summary$lower), fill = "grey80") +
+    p1 <- ggplot(data = NULL, aes(x= years, y= summary$indicator)) +
+      geom_ribbon(data= NULL, aes(ymax=summary$upper, ymin = summary$lower), fill = "grey80") +
       geom_line() +
       geom_point() +
       theme_linedraw() +
@@ -156,34 +156,44 @@ plotIndicator <- function(minYear, maxYear, label, plotType, st, lt, ind) {
       ggtitle(label) +
       annotate("text", x=1985, y=30, label= paste(n, "species"))
     
-    st <- st$species_assessment$category
+    if (method == "lambda") {
+      
+      st <- st$species_assessment$category
+      
+      st <- data.frame(st, rep(as.factor(1), length(st)))
+      
+      colnames(st) <- c("val","type")
+      
+      lt <- lt$species_assessment$category
+      
+      lt <- data.frame(lt, rep(as.factor(2), length(lt)))
+      
+      colnames(lt) <- c("val","type")
+      
+      dat <- rbind(st,lt)
+      
+      p2 <- ggplot(dat, aes(x = factor(type), fill = forcats::fct_rev(val))) +
+        geom_bar(position="fill") +
+        theme_linedraw() +
+        ylab("Proportion of species") +
+        xlab("") +
+        scale_x_discrete(labels=c("Short term","Long term")) +
+        guides(fill=guide_legend(title=""))
+      
+      
+      return(grid.arrange(p1, p2, ncol=2))
+      
+    } else {
+      
+      return(p1)
+      
+    }
     
-    st <- data.frame(st, rep(as.factor(1), length(st)))
     
-    colnames(st) <- c("val","type")
-    
-    lt <- lt$species_assessment$category
-    
-    lt <- data.frame(lt, rep(as.factor(2), length(lt)))
-    
-    colnames(lt) <- c("val","type")
-    
-    dat <- rbind(st,lt)
-    
-    p2 <- ggplot(dat, aes(x = factor(type), fill = forcats::fct_rev(val))) +
-      geom_bar(position="fill") +
-      theme_linedraw() +
-      ylab("Proportion of species") +
-      xlab("") +
-      scale_x_discrete(labels=c("Short term","Long term")) +
-      guides(fill=guide_legend(title=""))
-    
-    
-    return(grid.arrange(p1, p2, ncol=2))
     
   } else if (plotType == "nSpecies") {
     
-    p1 <- ggplot(data = NULL, aes(x= years, y= ind$summary$Species_Number)) +
+    p1 <- ggplot(data = NULL, aes(x= years, y= summary$Species_Number)) +
       geom_line() +
       geom_point() +
       theme_linedraw() +
@@ -195,7 +205,7 @@ plotIndicator <- function(minYear, maxYear, label, plotType, st, lt, ind) {
     
   } else {
     
-    width <- ind$summary$upper - ind$summary$lower
+    width <- summary$upper - summary$lower
     
     p1 <- ggplot(data = NULL, aes(y= width, x= ind$summary$Species_Number)) +
       geom_point() +
