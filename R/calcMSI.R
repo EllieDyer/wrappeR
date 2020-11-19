@@ -13,6 +13,9 @@
 #'
 #' @param plotLabel String. Title for the indicator plot.
 #' 
+#' @param bmaInd String. Use "prime" if all species data are available for all species in all years, and 
+#'               "reg" otherwise. See Freeman et al. 2020 for details. 
+#' 
 #' @param ... String. Title for the indicator plot.Additional arguments to be passed to \code{BRCindicators::bma}
 #' 	  
 #' @return An list with elements indicator, short term assessment, long term assessment and plot.
@@ -25,6 +28,7 @@ calcMSI <- function(dat,
                     write, 
                     outPath,
                     plotLabel,
+                    bmaInd,
                     ...) {
   
   if (!method %in% c("lambda","bma")) stop("Method must be one of lambda or bma")
@@ -94,7 +98,7 @@ calcMSI <- function(dat,
                seFromData = TRUE,
                ...)
     
-    if (bmaInd <- "prime") {
+    if (bmaInd == "prime") {
       
       summary <- data.frame(indicator = ind$Index.Mprime,
                             lower = ind$lowerCI.Mprime,
