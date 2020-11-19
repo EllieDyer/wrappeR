@@ -88,6 +88,8 @@ calcMSI <- function(dat,
     inDat <- data.frame(means, 
                         se = se)
     
+    inDat$year <- as.numeric(inDat$year)
+    
     ind <- bma(data = inDat,
                seFromData = TRUE,
                ...)
