@@ -98,11 +98,11 @@ calcMSI <- function(dat,
                seFromData = TRUE,
                ...)
     
-    if (bmaInd == "prime") {
+    if (bmaInd != "prime") {
       
-      summary <- data.frame(indicator = ind$Index.Mprime,
-                            lower = ind$lowerCI.Mprime,
-                            upper = ind$upperCI.Mprime,
+      summary <- data.frame(indicator = ind$Index.M,
+                            lower = ind$lowerCI.M,
+                            upper = ind$upperCI.M,
                             Species_Number = length(unique(dat$species)))
       
     } else {
