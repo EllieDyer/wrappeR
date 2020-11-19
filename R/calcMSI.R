@@ -77,8 +77,6 @@ calcMSI <- function(dat,
                   variable.name = "year",
                   value.name = "index")
       
-      out$year <- as.numeric(gsub("year_", "", out$year))
-      
       return(out)
       
     }
