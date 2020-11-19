@@ -7,7 +7,7 @@ sampSubset <- function(subset, inPath) {
                         fileEncoding = "latin1")
   
   poll.list <- read.csv(paste0(inPath, "pollinators.csv"), stringsAsFactors = FALSE)
-  
+   
   poll2Drop.list <- read.csv(paste0(inPath, "poll2Drop.csv"))
   
   if (subset == "priority") {

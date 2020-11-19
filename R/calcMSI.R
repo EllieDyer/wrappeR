@@ -77,7 +77,7 @@ calcMSI <- function(dat,
                   variable.name = "year",
                   value.name = "index")
       
-      return(out)
+      return(out) 
       
     }
     
