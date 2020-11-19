@@ -28,7 +28,7 @@ calcMSI <- function(dat,
                     write, 
                     outPath,
                     plotLabel,
-                    bmaInd,
+                    bmaInd = NULL,
                     ...) {
   
   if (!method %in% c("lambda","bma")) stop("Method must be one of lambda or bma")
