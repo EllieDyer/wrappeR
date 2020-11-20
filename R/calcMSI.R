@@ -28,7 +28,8 @@ calcMSI <- function(dat,
                     write, 
                     outPath,
                     plotLabel,
-                    bmaInd = NULL) {
+                    bmaInd = NULL,
+                    ...) {
   
   if (!method %in% c("lambda","bma")) stop("Method must be one of lambda or bma")
   
@@ -94,23 +95,9 @@ calcMSI <- function(dat,
     inDat$year <- as.numeric(inDat$year)
     
     ind <- bma(data = inDat,
-               seFromData = TRUE)
+               seFromData = TRUE,
+               ...)
     
-    if (bmaInd != "prime") {
-      
-      summary <- data.frame(indicator = ind$Index.M,
-                            lower = ind$lowerCI.M,
-                            upper = ind$upperCI.M,
-                            Species_Number = length(unique(inDat$species)))
-      
-    } else {
-      
-      summary <- data.frame(indicator = ind$Index.Mprime,
-                            lower = ind$lowerCI.Mprime,
-                            upper = ind$upperCI.Mprime,
-                            Species_Number = length(unique(inDat$species)))
-      
-    }
     
     lt <- NULL
     
