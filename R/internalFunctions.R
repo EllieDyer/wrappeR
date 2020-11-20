@@ -190,7 +190,7 @@ plotIndicator <- function(minYear, maxYear, label, plotType, st, lt) {
     }
     
     
-    
+     
   } else if (plotType == "nSpecies") {
     
     p1 <- ggplot(data = NULL, aes(x= years, y= summary$Species_Number)) +
