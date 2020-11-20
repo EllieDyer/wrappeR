@@ -119,16 +119,11 @@ calcMSI <- function(dat,
     st <- NULL
     
   }
+
+  out <- list(summary, ind)
   
-  #plot <- plotIndicator(minYear=minYr,  
-  #                      maxYear = maxYr, 
-  #                      label = plotLabel,
-  #                      plotType = "indicator",
-  #                      st = st, 
-  #                      lt = lt)
-#  
- # print(plot)
-  #
-  return(list(ind))
+  names(out) <- c("Summary", "MetaData")
+
+  return(out)
   
 }
