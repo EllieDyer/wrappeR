@@ -120,15 +120,15 @@ calcMSI <- function(dat,
     
   }
   
-  plot <- plotIndicator(minYear=minYr,  
-                        maxYear = maxYr, 
-                        label = plotLabel,
-                        plotType = "indicator",
-                        st = st, 
-                        lt = lt)
-  
-  print(plot)
-  
-  return(list(ind, st, lt, plot))
+  #plot <- plotIndicator(minYear=minYr,  
+  #                      maxYear = maxYr, 
+  #                      label = plotLabel,
+  #                      plotType = "indicator",
+  #                      st = st, 
+  #                      lt = lt)
+#  
+ # print(plot)
+  #
+  return(list(ind))
   
 }
