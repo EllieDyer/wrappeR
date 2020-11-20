@@ -135,7 +135,7 @@ extractMeta <- function(inPath, group, outPath, write, region) {
   
 }
 
-plotIndicator <- function(minYear, maxYear, label, plotType, st, lt, ind) {
+plotIndicator <- function(minYear, maxYear, label, plotType, st, lt) {
   
   n <- max(summary$Species_Number)
   
