@@ -143,26 +143,6 @@ plotIndicator <- function(minYear, maxYear, label, plotType, st, lt, ind) {
   
   years <- minYear:maxYear
   
-  if (method == "bma") {
-    
-    if (bmaInd != "prime") {
-      
-      summary <- data.frame(indicator = ind$Index.M,
-                            lower = ind$lowerCI.M,
-                            upper = ind$upperCI.M,
-                            Species_Number = length(unique(inDat$species)))
-      
-    } else {
-      
-      summary <- data.frame(indicator = ind$Index.Mprime,
-                            lower = ind$lowerCI.Mprime,
-                            upper = ind$upperCI.Mprime,
-                            Species_Number = length(unique(inDat$species)))
-      
-    }
-    
-  }
-  
   if (plotType == "indicator") {
     
     p1 <- ggplot(data = NULL, aes(x= years, y= summary$indicator)) +
