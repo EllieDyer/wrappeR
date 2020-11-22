@@ -66,6 +66,10 @@ calcMSI <- function(dat,
                                           start_year = (max(ind$summary$year) - 6),  
                                           end_year = max(ind$summary$year)) 
     
+    final <- BRCindicators::trend_assessment(ind, 
+                                          start_year = (max(ind$summary$year) - 1),  
+                                          end_year = max(ind$summary$year)) 
+    
   } else {
     
     means <- aggregate(.~species, data=dat, mean)
@@ -118,9 +122,11 @@ calcMSI <- function(dat,
     
     st <- NULL
     
+    final <- NULL
+    
   }
 
-  out <- list(summary, ind)
+  out <- list(summary, ind, st, lt, final)
   
   names(out) <- c("Summary", "MetaData")
 
