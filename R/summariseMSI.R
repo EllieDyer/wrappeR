@@ -122,7 +122,7 @@ if (plotType == "indicator") {
 
 if (method == "lambda") {
   
-  indicator$Summary$year <- indicator$Summary$year + (startYear - 1)
+  indicator$Summary$year <- indicator$Summary$year + (minYear - 1)
   
   out1 <- indicator$Summary
   
