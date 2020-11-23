@@ -35,9 +35,9 @@ summariseMSI <- function(minYear,
     
   }
   
-n <- max(indicator$summary$Species_Number)
+n <- max(indicator$Summary$Species_Number)
 
-nSpec <- indicator$summary$Species_Number
+nSpec <- indicator$Summary$Species_Number
 
 years <- minYear:maxYear
 
@@ -122,7 +122,7 @@ if (plotType == "indicator") {
 
 if (method == "lambda") {
   
-  indicator$Summary$year <- indiccator$Summary$year + (startYear - 1)
+  indicator$Summary$year <- indicator$Summary$year + (startYear - 1)
   
   out1 <- indicator$Summary
   
