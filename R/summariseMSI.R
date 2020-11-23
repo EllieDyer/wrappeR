@@ -1,24 +1,22 @@
-#' \code{calcMSI} - Calculate multispecies indicator.
+#' \code{summariseMSI} - Summarise the multispecies indicator for reporting to e.g. JNCC.
 #' 
-#' @description This function takes the output of \code{applyFilters} and produces a multispecies indicator
-#'              using the chosen method.
+#' @description This function takes the output of \code{calcMSI} and summarises the outputs either as a plot or in the 
+#'              format JNCC require for the UK biodiversity indicators.
 #'
-#' @param dat String. Object returned by \code{applyFilters}.
+#' @param minYear Numeric. First year of the indicator.
 #' 
-#' @param method String. Which indicator method to use. One of "lambda" or "BMA". 
+#' @param maxYear Numeric. Final year of the indicator.
 #' 
-#' @param write Logical. Whether or not to write the outputs to  file.
+#' @param label String. title for indicator plot.
 #'                  
-#' @param outPath String. Where to store the outputs if write = TRUE. 
-#'
-#' @param plotLabel String. Title for the indicator plot.
+#' @param plotType String. Type of plot to produce. Options are "indicator" to plot the indicator, or "nSpecies"
+#'                 to plot the number of species contributing to each year of the indicator. 
 #' 
-#' @param bmaInd String. Use "prime" if all species data are available for all species in all years, and 
-#'               "reg" otherwise. See Freeman et al. 2020 for details. 
+#' @param method String. Method used to calculate the indicator. One of "lambda" or "bma".
 #' 
-#' @param ... String. Title for the indicator plot.Additional arguments to be passed to \code{BRCindicators::bma}
+#' @param indicator String. Object returned by \code{calcMSI}.
 #' 	  
-#' @return An list with elements indicator, short term assessment, long term assessment and plot.
+#' @return If method = "lambda" returns summary stats for reporting to JNCC. Otherwise produces a plot of he indicator.
 #'         
 #' @export
 #'
@@ -27,10 +25,6 @@ summariseMSI <- function(minYear,
                          maxYear, 
                          label, 
                          plotType, 
-                         st = NULL, 
-                         lt = NULL, 
-                         final = NULL,
-                         write,
                          indicator,
                          method) {
 
