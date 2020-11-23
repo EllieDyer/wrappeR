@@ -128,7 +128,7 @@ calcMSI <- function(dat,
 
   out <- list(summary, ind, st, lt, final)
   
-  names(out) <- c("Summary", "MetaData")
+  names(out) <- c("Summary", "MetaData", "st", "lt", "final")
 
   return(out)
   

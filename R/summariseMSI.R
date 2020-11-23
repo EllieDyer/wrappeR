@@ -58,13 +58,13 @@ if (plotType == "indicator") {
   
   if (method == "lambda") {
     
-    st <- st$species_assessment$category
+    st <- indicator$st$species_assessment$category
     
     st <- data.frame(st, rep(as.factor(1), length(st)))
     
     colnames(st) <- c("val","type")
     
-    lt <- lt$species_assessment$category
+    lt <- indicator$lt$species_assessment$category
     
     lt <- data.frame(lt, rep(as.factor(2), length(lt)))
     
