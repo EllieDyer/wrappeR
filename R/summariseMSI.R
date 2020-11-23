@@ -122,13 +122,13 @@ if (plotType == "indicator") {
 
 if (method == "lambda") {
   
-  indicator$summary$year <- ind$summary$year + (startYear - 1)
+  indicator$Summary$year <- indiccator$Summary$year + (startYear - 1)
   
-  out1 <- indicator$summary
+  out1 <- indicator$Summary
   
-  changeLT <- data.frame(table(indicator$species_change$category))
+  changeLT <- data.frame(table(indicator$metaData$species_change$category))
   
-  rawLT <- indicator$species_change[,1]
+  rawLT <- indicator$metaData$species_change[,1]
   
   L <- length(rawLT)
   
