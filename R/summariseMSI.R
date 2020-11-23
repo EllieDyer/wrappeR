@@ -117,7 +117,7 @@ if (plotType == "indicator") {
   print(p1)
   
 }
-
+ 
 ## now generate summary stats for reporting 
 
 if (method == "lambda") {
