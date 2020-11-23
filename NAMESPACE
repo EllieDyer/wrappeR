@@ -3,3 +3,4 @@
 export(applyFilters)
 export(calcMSI)
 export(createRoster)
+export(summariseMSI)

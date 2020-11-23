@@ -4,7 +4,7 @@
 \alias{calcMSI}
 \title{\code{calcMSI} - Calculate multispecies indicator.}
 \usage{
-calcMSI(dat, method, write, outPath, plotLabel)
+calcMSI(dat, method, write, outPath, plotLabel, bmaInd = NULL, ...)
 }
 \arguments{
 \item{dat}{String. Object returned by \code{applyFilters}.}
@@ -16,6 +16,11 @@ calcMSI(dat, method, write, outPath, plotLabel)
 \item{outPath}{String. Where to store the outputs if write = TRUE.}
 
 \item{plotLabel}{String. Title for the indicator plot.}
+
+\item{bmaInd}{String. Use "prime" if all species data are available for all species in all years, and 
+"reg" otherwise. See Freeman et al. 2020 for details.}
+
+\item{...}{String. Title for the indicator plot.Additional arguments to be passed to \code{BRCindicators::bma}}
 }
 \value{
 An list with elements indicator, short term assessment, long term assessment and plot.

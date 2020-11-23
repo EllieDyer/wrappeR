@@ -5,8 +5,8 @@
 \title{\code{createRoster} - Specify how to filter the occupancy model outputs.}
 \usage{
 createRoster(
+  index,
   modPath = "/data-s3/occmods/",
-  datPath,
   metaPath,
   ver = "2017_Charlie",
   group,
