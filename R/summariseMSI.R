@@ -45,8 +45,8 @@ years <- minYear:maxYear
 
 if (plotType == "indicator") {
   
-  p1 <- ggplot(data = NULL, aes(x= years, y= indicator$summary$indicator)) +
-    geom_ribbon(data= NULL, aes(ymax= indicator$summary$upper, ymin = indicator$summary$lower), fill = "grey80") +
+  p1 <- ggplot(data = NULL, aes(x= years, y= indicator$Summary$indicator)) +
+    geom_ribbon(data= NULL, aes(ymax= indicator$Summary$upper, ymin = indicator$Summary$lower), fill = "grey80") +
     geom_line() +
     geom_point() +
     theme_linedraw() +
