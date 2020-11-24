@@ -126,9 +126,9 @@ if (method == "lambda") {
   
   out1 <- indicator$Summary
   
-  changeLT <- data.frame(table(indicator$metaData$species_change$category))
+  changeLT <- data.frame(table(indicator$MetaData$species_change$category))
   
-  rawLT <- indicator$metaData$species_change[,1]
+  rawLT <- indicator$MetaData$species_change[,1]
   
   L <- length(rawLT)
   
