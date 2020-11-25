@@ -28,12 +28,6 @@ summariseMSI <- function(minYear,
                          indicator,
                          method) {
 
-
-  if (is.null(st) | is.null(lt)) {
-  
-  warning("If you are using the lambda indicator you must specify lt and st")
-    
-  }
   
 n <- max(indicator$Summary$Species_Number)
 
