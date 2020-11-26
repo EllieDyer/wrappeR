@@ -15,7 +15,25 @@
 
 applyFilters <- function(roster) {
   
-  samp_post <- tempSampPost(indata = paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
+  if (roster$indicator == "priority") {
+    
+    keep <- sampSubset("priority",
+                       inPath = roster$metaPath) 
+    
+  } else if (roster$indicator == "pollinators") {
+    
+    keep <- sampSubset("pollinators",
+                       inPath = roster$metaPath)
+    
+  } else {
+
+    keep <- gsub(".rdata", "", list.files(paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
+                            pattern = ".rdata")) 
+    
+  }
+  
+  out <- tempSampPost(indata = paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
+                            keep = keep,
                             output_path = NULL,
                             REGION_IN_Q = paste0("psi.fs.r_", roster$region),
                             sample_n = roster$nSamps,
@@ -23,49 +41,23 @@ applyFilters <- function(roster) {
                             combined_output = TRUE,
                             #max_year_model = 2018,
                             #min_year_model = 1970,
-                            write = FALSE)
+                            write = FALSE,
+                            t0 = roster$t0,
+                            tn = roster$tn)
+  
+  samp_post <- out[[1]]
   
   samp_post$species <- tolower(samp_post$species)
   
-  meta <- extractMeta(inPath = paste0("/data-s3/occmods/",
-                                                roster$group, "/input_data/", roster$ver, "/"),
-                      group = as.character(roster$group),
-                      outPath = roster$metaPath,
-                      write = F,
-                      region = roster$region)
+  meta <- out[[2]]
   
-  meta[ ,1] <- tolower(meta$Species)
+  meta[ ,1] <- tolower(meta[, 1])
   
   if (roster$clipBy != "species") {
     
     meta$min_year_data_r_GB <- min(meta$min_year_data_r_GB)
     
     meta$max_year_data_r_GB <- max(meta$max_year_data_r_GB)
-    
-  }
-  
-  if (roster$indicator == "priority") {
-    
-    prio <- sampSubset("priority",
-                       inPath = roster$metaPath) 
-    
-    keep <- tolower(prio)
-    
-  } else if (roster$indicator == "pollinators") {
-    
-    poll <- sampSubset("pollinators",
-                       inPath = roster$metaPath)
-    
-    pollDrop <- sampSubset("poll2Drop",
-                           inPath = roster$metaPath)
-    
-    keep <- tolower(poll)
-    
-    keep <- keep[-which(keep %in% pollDrop)]
-    
-  } else {
-    
-    keep <- NULL
     
   }
   
@@ -80,7 +72,7 @@ applyFilters <- function(roster) {
                                    maxStartGap = 0, 
                                    maxEndGap = 0,
                                    maxMiddleGap = 10, 
-                                   keepSpecies = keep, 
+                                   keepSpecies = NULL, 
                                    removeSpecies = NULL,
                                    ClipFirst = TRUE, 
                                    ClipLast = TRUE)

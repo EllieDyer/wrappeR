@@ -50,7 +50,9 @@ createRoster <- function(index,
                          minObs = 50,
                          write,
                          outPath,
-                         clipBy = "species") {
+                         clipBy = "species",
+                         t0,
+                         tn) {
   
   df <- data.frame(index = index,
                    modPath = modPath,
@@ -65,7 +67,9 @@ createRoster <- function(index,
                    minObs = minObs, 
                    write = write, 
                    outPath = outPath,
-                   clipBy = clipBy)
+                   clipBy = clipBy,
+                   t0 = t0,
+                   tn = tn)
   
   roster <- split(df, seq(nrow(df)))
   
