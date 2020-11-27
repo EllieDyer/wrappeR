@@ -42,6 +42,7 @@ applyFilters <- function(roster) {
                             #max_year_model = 2018,
                             #min_year_model = 1970,
                             write = FALSE,
+                            minObs = roster$minObs,
                             t0 = roster$t0,
                             tn = roster$tn)
   
@@ -54,11 +55,8 @@ applyFilters <- function(roster) {
   meta[ ,1] <- tolower(meta[, 1])
   
   if (roster$clipBy != "species") {
-    
     meta$min_year_data_r_GB <- min(meta$min_year_data_r_GB)
-    
     meta$max_year_data_r_GB <- max(meta$max_year_data_r_GB)
-    
   }
   
   stacked_samps <- tempStackFilter(input = "memory",
