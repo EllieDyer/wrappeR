@@ -47,11 +47,11 @@ applyFilters <- function(roster) {
   
   samp_post <- out[[1]]
   
-  samp_post$species <- tolower(samp_post$species)
+  #samp_post$species <- tolower(samp_post$species)
   
   meta <- out[[2]]
   
-  meta[ ,1] <- tolower(meta[, 1])
+  #meta[ ,1] <- tolower(meta[, 1])
   
   if (roster$clipBy != "species") {
     
