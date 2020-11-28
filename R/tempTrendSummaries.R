@@ -1,3 +1,5 @@
+#' @importFrom parallel mclapply
+
 tempSampPost <- function(indata = "../data/model_runs/", 
                          keep,
                          output_path = "../data/sampled_posterior_1000/",
@@ -10,7 +12,8 @@ tempSampPost <- function(indata = "../data/model_runs/",
                          write = FALSE,
                          minObs = NULL,
                          t0, 
-                         tn){
+                         tn,
+                         parallel = TRUE){
   
   ### set up species list we want to loop though ###
   spp.list <- list.files(indata, 
@@ -97,8 +100,10 @@ tempSampPost <- function(indata = "../data/model_runs/",
     } else return(NULL)
   }
   
-  outputs <- lapply(spp.list, 
+  if(parallel) outputs <- mclapply(spp.list, 
                     combineSamps, minObs=minObs)
+  else outputs <- lapply(spp.list, 
+                           combineSamps, minObs=minObs)
   
   samp_post <- lapply(outputs, 
                       function(x)  y <- x[[1]])
