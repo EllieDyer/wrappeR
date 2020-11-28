@@ -105,12 +105,17 @@ tempSampPost <- function(indata = "../data/model_runs/",
   else outputs <- lapply(spp.list, 
                            combineSamps, minObs=minObs)
   
-  samp_post <- lapply(outputs, 
+  
+  if(parallel) samp_post <- parallel::mclapply(outputs, 
+                                   function(x)  y <- x[[1]])
+  else samp_post <- lapply(outputs, 
                       function(x)  y <- x[[1]])
   
   samp_post <- do.call("rbind", samp_post)
   
-  meta <- lapply(outputs, 
+  if(parallel) meta <- parallel::mclapply(outputs, 
+                              function(x) y <- x[[2]])
+  else meta <- lapply(outputs, 
                  function(x) y <- x[[2]])
   
   meta <- do.call("rbind", meta)
