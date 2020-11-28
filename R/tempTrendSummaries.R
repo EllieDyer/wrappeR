@@ -101,7 +101,7 @@ tempSampPost <- function(indata = "../data/model_runs/",
   }
   
   if(parallel) outputs <- parallel::mclapply(spp.list, 
-                    combineSamps, minObs=minObs)
+                    combineSamps, minObs=minObs, mc.cores = 4)
   else outputs <- lapply(spp.list, 
                            combineSamps, minObs=minObs)
   
