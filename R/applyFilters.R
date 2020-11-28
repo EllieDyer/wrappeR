@@ -13,7 +13,7 @@
 #' @export
 #' 
 
-applyFilters <- function(roster) {
+applyFilters <- function(roster, parallel = TRUE) {
   
   if (roster$indicator == "priority") {
     
@@ -44,7 +44,8 @@ applyFilters <- function(roster) {
                             write = FALSE,
                             minObs = roster$minObs,
                             t0 = roster$t0,
-                            tn = roster$tn)
+                            tn = roster$tn,
+                            parallel = parallel)
   
   samp_post <- out[[1]]
   
