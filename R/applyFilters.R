@@ -56,8 +56,8 @@ applyFilters <- function(roster, parallel = TRUE) {
   meta[ ,1] <- tolower(meta[, 1])
   
   if (roster$clipBy != "species") {
-    meta$min_year_data_r_GB <- min(meta$min_year_data_r_GB)
-    meta$max_year_data_r_GB <- max(meta$max_year_data_r_GB)
+    meta[,3] <- min(meta[,3])
+    meta[,4] <- max(meta[,4])
   }
   
   stacked_samps <- tempStackFilter(input = "memory",
