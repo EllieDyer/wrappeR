@@ -90,7 +90,7 @@ applyFilters <- function(roster, parallel = TRUE) {
 
 ############ applySamp
 # just the first part of applyFilters
-
+#' @export
 applySamp <- function(roster, parallel = TRUE) {
   
   if (roster$indicator == "priority") {
