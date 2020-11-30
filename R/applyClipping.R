@@ -17,15 +17,17 @@
 #' @export
 #' 
 
-applyClipping <- function(roster, parallel = TRUE) {
+applyClipping <- function(data, parallel = TRUE) {
+  
+  
+  samp_post <- data[[1]]
+  meta <- data[[2]]
   
   if (roster$clipBy != "species") {
     meta[,3] <- min(meta[,3])
     meta[,4] <- max(meta[,4])
   }
-  
-  #samp_post <- 
-  #meta
+
   
   stacked_samps <- tempStackFilter(input = "memory",
                                    dat = samp_post,
