@@ -1,4 +1,6 @@
 #' @importFrom parallel mclapply
+#' @importFrom("stats", "aggregate", "sd")
+#' @importFrom("utils", "read.csv", "str", "write.csv")
 
 tempSampPost <- function(indata = "../data/model_runs/", 
                          keep,
