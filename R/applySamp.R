@@ -1,6 +1,6 @@
 #' @export
 
-applySamp <- function(roster, parallel = TRUE) {
+applySamp <- function(roster, parallel = TRUE, sample = TRUE) {
   
   if (roster$indicator == "priority") {
     
@@ -19,7 +19,8 @@ applySamp <- function(roster, parallel = TRUE) {
     
   }
   
-  out <- tempSampPost(indata = paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
+  if(sample)
+    out <- tempSampPost(indata = paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
                       keep = keep,
                       output_path = NULL,
                       REGION_IN_Q = paste0("psi.fs.r_", roster$region),
@@ -33,6 +34,17 @@ applySamp <- function(roster, parallel = TRUE) {
                       t0 = roster$t0,
                       tn = roster$tn,
                       parallel = parallel)
+  else
+    out <- getA(indata = paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
+                        keep = keep,
+                        REGION_IN_Q = paste0("psi.fs.r_", roster$region),
+                        group_name = roster$group,
+                        combined_output = TRUE,
+                        write = FALSE,
+                        minObs = roster$minObs,
+                        t0 = roster$t0,
+                        tn = roster$tn,
+                        parallel = parallel)
   
   samp_post <- out[[1]]
   

@@ -16,7 +16,6 @@
 #' @export
 
 
-
 getA <- function(indata = "../data/model_runs/", 
                          keep,
                          #output_path = "../data/sampled_posterior_1000/",
@@ -126,10 +125,7 @@ getA <- function(indata = "../data/model_runs/",
                      gap_middle = meta$gap)
   
   colnames(meta) <- paste0(colnames(meta), "_r_", gsub("a_", "", REGION_IN_Q))
-  
- # if (write == TRUE) {
-#    save(samp_post, file = paste(output_path, group_name, "_all_spp_sample_", sample_n, "_post_", REGION_IN_Q, ".rdata", sep = ""))
-#  }
-  
+
   return(list(a_post, meta))
+
 }
