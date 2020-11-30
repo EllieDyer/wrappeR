@@ -13,7 +13,8 @@ tempSampPost <- function(indata = "../data/model_runs/",
                          minObs = NULL,
                          t0, 
                          tn,
-                         parallel = TRUE){
+                         parallel = TRUE,
+                         cores = detect.cores()-1){
   
   ### set up species list we want to loop though ###
   spp.list <- list.files(indata, 
@@ -100,20 +101,20 @@ tempSampPost <- function(indata = "../data/model_runs/",
     } else return(NULL)
   }
   
-  if(parallel) outputs <- parallel::mclapply(spp.list, 
-                    combineSamps, minObs=minObs, mc.cores = 4)
+  if(parallel) outputs <- parallel::mclapply(spp.list, mc.cores = cores,
+                    combineSamps, minObs=minObs)
   else outputs <- lapply(spp.list, 
                            combineSamps, minObs=minObs)
   
   
-  if(parallel) samp_post <- parallel::mclapply(outputs, 
+  if(parallel) samp_post <- parallel::mclapply(outputs, mc.cores = cores,
                                    function(x)  y <- x[[1]])
   else samp_post <- lapply(outputs, 
                       function(x)  y <- x[[1]])
   
   samp_post <- do.call("rbind", samp_post)
   
-  if(parallel) meta <- parallel::mclapply(outputs, 
+  if(parallel) meta <- parallel::mclapply(outputs, mc.cores = cores,
                               function(x) y <- x[[2]])
   else meta <- lapply(outputs, 
                  function(x) y <- x[[2]])
