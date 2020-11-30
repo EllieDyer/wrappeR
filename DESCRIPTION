@@ -1,9 +1,9 @@
 Package: wrappeR
 Type: Package
 Title: What the Package Does (Title Case)
-Version: 0.1.1
+Version: 0.1.2
 Author: Rob Boyd
-Maintainer: Joe Developer <Joe.Developer@some.domain.net>
+Maintainer: Rob Boyd <robboy@ceh.ac.uk>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 Depends: R (>= 3.1.0)
