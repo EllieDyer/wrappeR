@@ -22,7 +22,7 @@ tempSampPost <- function(indata = "../data/model_runs/",
                          parallel = TRUE,
                          n.cores = NULL){
   
-  if(parallel & is.null(n.cores)) parallel::detectCores() - 1
+  if(parallel & is.null(n.cores)) n.cores <- parallel::detectCores() - 1
   
   ### set up species list we want to loop though ###
   spp.list <- list.files(indata, 
