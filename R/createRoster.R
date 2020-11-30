@@ -60,6 +60,11 @@ createRoster <- function(index,
                          t0,
                          tn) {
   
+  if (!region %in% c("GB", "UK", "ENGLAND", "SCOTLAND", "WALES", "NORTHERN.IRELAND")) {
+    
+    stop("Error: region must be be one of GB, UK, ENGLAND, SCOTLAND, WALES or NORTHERN.IRELAND")
+  }
+  
   df <- data.frame(index = index,
                    modPath = modPath,
                    datPath = paste0("/data-s3/occmods/",
