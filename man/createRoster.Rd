@@ -16,13 +16,19 @@ createRoster(
   minObs = 50,
   write,
   outPath,
-  clipBy = "species"
+  clipBy = "species",
+  t0,
+  tn
 )
 }
 \arguments{
+\item{index}{NO IDEA WHAT THIS IS FOR}
+
 \item{modPath}{String. Location of the occupancy model outputs.}
 
 \item{ver}{String. Which set of occupancy model outputs? E.g. Charlie's are "2017_Charlie".}
+
+\item{group}{SOMETHING}
 
 \item{indicator}{String. Whether or not to subset species and, if so, based
 on what. Options are: "priority" for priority species; 
@@ -44,6 +50,8 @@ species is dropped from the sample.}
 
 \item{clipBy}{String. One of "species" or "group" indicating whether to clip outputs by the first and last years of data for
 each species or for the whole group, respectively.}
+
+\item{metPath}{String.}
 }
 \value{
 A list of 1-row dataframes containing all arguments needed for applyFilters. applyFilters
