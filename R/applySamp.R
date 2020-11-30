@@ -65,6 +65,6 @@ applySamp <- function(roster, parallel = TRUE, sample = TRUE) {
               indicator = roster$indicator,
               group_name = roster$group,
               region = roster$region,
-              minObs = roster$minObs,
-              clipBy = roster$clipBy))
+              clipBy = roster$clipBy,
+              minObs = roster$minObs))
 }
