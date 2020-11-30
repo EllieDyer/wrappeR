@@ -42,6 +42,6 @@ applySamp <- function(roster, parallel = TRUE) {
   
   meta[ ,1] <- tolower(meta[, 1])
   
-  return(list(samp_post, meta))
+  return(list(samp_post=samp_post, meta=meta))
   
 }
