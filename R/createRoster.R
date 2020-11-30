@@ -15,8 +15,8 @@
 #'                  on what. Options are: "priority" for priority species; 
 #'                  "pollinators" for pollinators; and all to return all species in the group.
 #'                  
-#' @param region String. One of "UK", "GB", "England", "Wales", "Scotland", 
-#'               or "NorthernIreland".
+#' @param region String. One of "UK", "GB", "ENGLAND", "WALES", "SCOTLAND", 
+#'               or "NORTHERN.IRELAND".
 #'
 #' @param nSamps Numeric. Number of samples to extract from each species' 
 #'               posterior distribution.
