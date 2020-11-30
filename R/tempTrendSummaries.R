@@ -1,5 +1,5 @@
 #' @importFrom parallel mclapply
-#' @importFrom parallel detect.Cores
+#' @importFrom parallel detectCores
 #' @importFrom stats aggregate
 #' @importFrom stats sd
 #' @importFrom utils read.csv
