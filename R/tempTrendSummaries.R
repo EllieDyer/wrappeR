@@ -1,5 +1,6 @@
 #' @importFrom parallel mclapply
-#' @importFrom stats aggregate sd
+#' @importFrom stats aggregate
+#' @importFrom stats sd
 #' @importFrom utils read.csv
 #' @importFrom utils str
 #' @importFrom utils write.csv
