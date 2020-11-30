@@ -60,6 +60,11 @@ applySamp <- function(roster, parallel = TRUE, sample = TRUE) {
   
   meta[ ,1] <- tolower(meta[, 1])
   
-  return(list(samp_post=samp_post, meta=meta))
-  
+  return(list(samp_post = samp_post, 
+              meta = meta,
+              indicator = roster$indicator,
+              group_name = roster$group,
+              region = roster$region,
+              minObs = roster$minObs,
+              clipBy = roster$clipBy))
 }

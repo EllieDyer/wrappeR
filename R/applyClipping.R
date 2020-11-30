@@ -1,4 +1,4 @@
-#' \code{applyFilters} - Apply filters to occupancy model outputs.
+#' \code{applyClipping} - Apply filters to occupancy model outputs.
 #' 
 #' @description This function can be used to subset the occupancy model
 #'              outputs based on number of records, priority/ pollinator status
@@ -15,27 +15,23 @@
 #' @return A dataframe with processed model outputs to be passed to \code{calcMSI}.
 #'         
 #' @export
-#' 
 
-applyClipping <- function(data, roster, meta, parallel = TRUE) {
+
+applyClipping <- function(data, parallel = TRUE) {
   
-  samp_post <- data[[1]]
-  meta <- data[[2]]
-  
-  if (roster$clipBy != "species") {
-    meta[,3] <- min(meta[,3])
-    meta[,4] <- max(meta[,4])
+  if (data$clipBy != "species") {
+    data$meta[,3] <- min(data$meta[,3])
+    data$meta[,4] <- max(data$meta[,4])
   }
-
   
   stacked_samps <- tempStackFilter(input = "memory",
-                                   dat = samp_post,
-                                   indata= NULL,
+                                   dat = data$samp_post,
+                                   indata = NULL,
                                    output_path=NULL, 
-                                   group_name=paste0(roster$indicator, roster$group), 
-                                   metadata=meta, 
-                                   region = roster$region,
-                                   minObs = roster$minObs, 
+                                   group_name = paste0(data$indicator, data$group), 
+                                   metadata = data$meta, 
+                                   region = data$region,
+                                   minObs = data$minObs, 
                                    maxStartGap = 0, 
                                    maxEndGap = 0,
                                    maxMiddleGap = 10, 
@@ -51,5 +47,4 @@ applyClipping <- function(data, roster, meta, parallel = TRUE) {
   #}
   
   return(stacked_samps)
-  
 }
