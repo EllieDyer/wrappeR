@@ -1,7 +1,7 @@
 #' \code{applySamp} - Reads a series of occupancy model and summarises the outputs
 
 #' @param roster list
-#' @param parallal Logical
+#' @param parallel Logical
 #' @param sample Logical. Should the model sample from the posterior distibution or just get the a parameters instead?
 #' @export
 #' 
@@ -65,6 +65,6 @@ applySamp <- function(roster, parallel = TRUE, sample = TRUE) {
               indicator = roster$indicator,
               group_name = roster$group,
               region = roster$region,
-              minObs = roster$minObs,
-              clipBy = roster$clipBy))
+              clipBy = roster$clipBy,
+              minObs = roster$minObs))
 }

@@ -1,3 +1,4 @@
+#' \code{tempStackFilter} - Version of StackFilter from TrendSummaries, edited
 #' @export
 
 tempStackFilter <- function (input = "memory", dat = NULL, indata = NULL, output_path, group_name, metadata, region = NULL, 
