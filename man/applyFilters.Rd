@@ -4,11 +4,13 @@
 \alias{applyFilters}
 \title{\code{applyFilters} - Apply filters to occupancy model outputs.}
 \usage{
-applyFilters(roster)
+applyFilters(roster, parallel = TRUE)
 }
 \arguments{
 \item{roster}{String. A dataframe with columns: datPath, modPath, ver, indicator, region,
 nSamps, minObs, write, outPath, clipBy, group (see \code{createRoster}).}
+
+\item{parallel}{Boolean. Should the operatoin run in parallel? If so then use n.cores-1.}
 }
 \value{
 A dataframe with processed model outputs to be passed to \code{calcMSI}.

@@ -7,9 +7,15 @@
 #'              as vectors of equal length, with each element in the vectors corresponding to one 
 #'              call to \code{applyFilters}. 
 #'              
+#' @param index NO IDEA WHAT THIS IS FOR
+#'
 #' @param modPath String. Location of the occupancy model outputs. 
-#' 
+#'
+#' @param metPath String. 
+#'   
 #' @param ver String. Which set of occupancy model outputs? E.g. Charlie's are "2017_Charlie".
+#' 
+#' @param group SOMETHING
 #' 
 #' @param indicator String. Whether or not to subset species and, if so, based
 #'                  on what. Options are: "priority" for priority species; 
