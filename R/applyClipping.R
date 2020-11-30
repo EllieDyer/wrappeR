@@ -9,7 +9,7 @@
 #'               nSamps, minObs, write, outPath, clipBy, group (see \code{createRoster}). 
 #'
 #' @param meta metadata produced by applySamp
-#'               
+#' @param clipBy String. Must be either Species or Group               
 #' @param parallel Boolean. Should the operatoin run in parallel? If so then use n.cores-1.
 #' 	  
 #' @return A dataframe with processed model outputs to be passed to \code{calcMSI}.
@@ -17,12 +17,16 @@
 #' @export
 
 
-applyClipping <- function(data, parallel = TRUE) {
+applyClipping <- function(data, parallel = TRUE, clipBy = "group") {
+  # parallel argument currently not used
   
-  if (data$clipBy != "species") {
-    data$meta[,3] <- min(data$meta[,3])
-    data$meta[,4] <- max(data$meta[,4])
-  }
+    if (clipBy == "group" | data$clipBy != "species") { 
+      # check that this arrangement makes sense
+      # I think it's ok, given only two possibilities. Group overrides......
+      data$meta[,3] <- min(data$meta[,3])
+      data$meta[,4] <- max(data$meta[,4])
+    }
+
   
   stacked_samps <- tempStackFilter(input = "memory",
                                    dat = data$samp_post,
