@@ -20,7 +20,6 @@ getA <- function(indata = "../data/model_runs/",
                          keep,
                          #output_path = "../data/sampled_posterior_1000/",
                          REGION_IN_Q = "a", 
-                         #sample_n = 1000,
                          group_name = "",
                          combined_output = TRUE,
                          max_year_model = NULL, 
@@ -101,16 +100,14 @@ getA <- function(indata = "../data/model_runs/",
   
   
   if(parallel) a_post <- parallel::mclapply(outputs, mc.cores = n.cores,
-                                   function(x)  y <- x[[1]])
-  else a_post <- lapply(outputs, 
-                      function(x)  y <- x[[1]])
+                                   function(x)  x[[1]])
+  else a_post <- lapply(outputs, function(x)  x[[1]])
   
   a_post <- do.call("rbind", a_post)
   
   if(parallel) meta <- parallel::mclapply(outputs, mc.cores = n.cores,
-                              function(x) y <- x[[2]])
-  else meta <- lapply(outputs, 
-                 function(x) y <- x[[2]])
+                              function(x) x[[2]])
+  else meta <- lapply(outputs, function(x) x[[2]])
   
   meta <- do.call("rbind", meta)
   
