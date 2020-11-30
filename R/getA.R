@@ -6,7 +6,7 @@
 #' The data extracted this way are what we need for the bma method
 #'
 #' @importFrom parallel mclapply
-#' @importFrom parallel detectCores
+#' @importFrom parallel detectCores 
 #' @importFrom stats aggregate
 #' @importFrom stats sd
 #' @importFrom utils read.csv

@@ -19,7 +19,6 @@
 
 applyClipping <- function(data, roster, meta, parallel = TRUE) {
   
-  
   samp_post <- data[[1]]
   meta <- data[[2]]
   
