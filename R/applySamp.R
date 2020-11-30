@@ -1,7 +1,5 @@
-############ applySamp
-# just the first part of applyFilters
-# right now this doesn't work because the NAMESPACE is not being updated
 #' @export
+
 applySamp <- function(roster, parallel = TRUE) {
   
   if (roster$indicator == "priority") {

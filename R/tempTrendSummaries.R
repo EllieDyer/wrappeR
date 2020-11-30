@@ -1,4 +1,5 @@
 #' @importFrom parallel mclapply
+#' @importFrom parallel detect.Cores
 #' @importFrom stats aggregate
 #' @importFrom stats sd
 #' @importFrom utils read.csv
@@ -19,7 +20,9 @@ tempSampPost <- function(indata = "../data/model_runs/",
                          t0, 
                          tn,
                          parallel = TRUE,
-                         cores = detect.cores()-1){
+                         n.cores = NULL){
+  
+  if(parallel & is.null(n.cores)) parallel::detectCores() - 1
   
   ### set up species list we want to loop though ###
   spp.list <- list.files(indata, 
@@ -60,12 +63,7 @@ tempSampPost <- function(indata = "../data/model_runs/",
       dat <- data.frame(year = dat$Year,
                         rec = dat$y)
       
-      #    nRec <- length(which(dat$rec == 1)) # this is VERY inefficient!
-      
-      #    if (nRec > 0) {
-      
       first <- min(dat$year[dat$rec == 1]) + (t0 - 1)
-      
       last <- max(dat$year[dat$rec == 1]) + (t0 - 1)
       
       firstMod <- t0
@@ -79,9 +77,7 @@ tempSampPost <- function(indata = "../data/model_runs/",
       if (length(yrs) > 1) {
         
         for (i in (1:length(yrs) - 1)) {
-          
           gaps <- c(gaps, yrs[i+1] - yrs[i])
-          
         }
       }
       
@@ -92,34 +88,26 @@ tempSampPost <- function(indata = "../data/model_runs/",
       } else {
         gap <- 1
       } 
-      
-      #    } else {  ## if no records then set other metadata arbitrarily high. This species will be dropped later anyway.
-      #      first <- tn
-      #      last <- tn 
-      #      gap <- 200
-      #     lastMod <- tn 
-      #      firstMod <- tn
-      #    }
-      
+
       out2 <- data.frame(species, nRec, first, last, gap, firstMod, lastMod)
       return(list(out1, out2))
     } else return(NULL)
   }
   
-  if(parallel) outputs <- parallel::mclapply(spp.list, mc.cores = cores,
+  if(parallel) outputs <- parallel::mclapply(spp.list, mc.cores = n.cores,
                     combineSamps, minObs=minObs)
   else outputs <- lapply(spp.list, 
                            combineSamps, minObs=minObs)
   
   
-  if(parallel) samp_post <- parallel::mclapply(outputs, mc.cores = cores,
+  if(parallel) samp_post <- parallel::mclapply(outputs, mc.cores = n.cores,
                                    function(x)  y <- x[[1]])
   else samp_post <- lapply(outputs, 
                       function(x)  y <- x[[1]])
   
   samp_post <- do.call("rbind", samp_post)
   
-  if(parallel) meta <- parallel::mclapply(outputs, mc.cores = cores,
+  if(parallel) meta <- parallel::mclapply(outputs, mc.cores = n.cores,
                               function(x) y <- x[[2]])
   else meta <- lapply(outputs, 
                  function(x) y <- x[[2]])
