@@ -68,7 +68,7 @@ createRoster <- function(index,
     mr_files_ver <- as.numeric(gsub(".csv", "", mr_files_ver))
     
     # load metadata for most recent models
-    mr <- read.csv(mr_files[which.max(mr_files_ver)])
+    mr <- read.csv(paste0("/data-s3/most_recent_meta/", mr_files[which.max(mr_files_ver)]))
     
     # small data frame of ver and group
     tdf <- data.frame(ver = ver, group = group)
