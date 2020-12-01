@@ -11,7 +11,7 @@
 #'
 #' @param modPath String. Location of the occupancy model outputs. 
 #'
-#' @param metPath String. 
+#' @param metaPath String. 
 #'   
 #' @param ver String. Which set of occupancy model outputs? E.g. Charlie's are "2017_Charlie".
 #' 
@@ -48,7 +48,7 @@
 createRoster <- function(index,
                          modPath = "/data-s3/occmods/", 
                          metaPath,
-                         ver = "2017_Charlie",
+                         ver = "most_recent",
                          group, 
                          indicator, 
                          region,
@@ -59,6 +59,27 @@ createRoster <- function(index,
                          clipBy = "species",
                          t0,
                          tn) {
+  
+  if("most_recent" %in% ver) {
+    
+    # find metadata for most recent models
+    mr_files <- list.files("/data-s3/most_recent_meta")
+    mr_files_ver <- gsub("metadata_", "", mr_files)
+    mr_files_ver <- as.numeric(gsub(".csv", "", mr_files_ver))
+    
+    # load metadata for most recent models
+    mr <- read.csv(mr_files[which.max(mr_files_ver)])
+    
+    # small data frame of ver and group
+    tdf <- data.frame(ver = ver, group = group)
+    
+    # subset metadata to matching taxonomic groups and most recent models
+    mr <- mr[mr$taxa %in% tdf$group & mr$most_recent == TRUE, ]
+    
+    # replace version with most recent model name
+    ver <- ifelse(tdf$ver == "most_recent", mr$dataset_name, tdf$ver)
+    
+  }
   
   df <- data.frame(index = index,
                    modPath = modPath,

@@ -8,7 +8,7 @@ createRoster(
   index,
   modPath = "/data-s3/occmods/",
   metaPath,
-  ver = "2017_Charlie",
+  ver = "most_recent",
   group,
   indicator,
   region,
@@ -25,6 +25,8 @@ createRoster(
 \item{index}{NO IDEA WHAT THIS IS FOR}
 
 \item{modPath}{String. Location of the occupancy model outputs.}
+
+\item{metaPath}{String.}
 
 \item{ver}{String. Which set of occupancy model outputs? E.g. Charlie's are "2017_Charlie".}
 
@@ -50,8 +52,6 @@ species is dropped from the sample.}
 
 \item{clipBy}{String. One of "species" or "group" indicating whether to clip outputs by the first and last years of data for
 each species or for the whole group, respectively.}
-
-\item{metPath}{String.}
 }
 \value{
 A list of 1-row dataframes containing all arguments needed for applyFilters. applyFilters
