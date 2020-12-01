@@ -44,7 +44,7 @@ calcMSI <- function(dat,
     arr <- sampArray(dat = dat,
                      startYear = minYr,
                      endYear = maxYr,
-                     niter = 1000)
+                     niter = max(dat$iteration))
     
     ind <- BRCindicators::lambda_indicator( 
       input=arr, 
