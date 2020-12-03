@@ -22,40 +22,54 @@ createRoster(
 )
 }
 \arguments{
-\item{index}{NO IDEA WHAT THIS IS FOR}
+\item{index}{Numeric. Index of the number of taxonomic groups to 
+\code{applyFilters} across.}
 
-\item{modPath}{String. Location of the occupancy model outputs.}
+\item{modPath}{A character string or vector of strings. Location(s) of the 
+occupancy model outputs.}
 
-\item{metaPath}{String.}
+\item{metaPath}{A character string or vector of strings. Location(s) of the 
+occupancy model metadata.}
 
-\item{ver}{String. Which set of occupancy model outputs? E.g. Charlie's are "2017_Charlie".}
+\item{ver}{A character string or vector of strings. Which set of occupancy 
+model outputs to use? Can be manually specified e.g. Charlie's 
+are "2017_Charlie"; or to source the most recent model versions 
+use "most_recent" (default), which uses model metadata stored at 
+"/data-s3/most_recent_meta" to identify the most recent model 
+version per taxonomic group.}
 
-\item{group}{SOMETHING}
+\item{group}{A character string or vector of strings. Taxonomic group(s), e.g. "Ants"}
 
-\item{indicator}{String. Whether or not to subset species and, if so, based
-on what. Options are: "priority" for priority species; 
-"pollinators" for pollinators; and all to return all species in the group.}
+\item{indicator}{A character string or vector of strings. Whether or not to 
+subset species and, if so, based on what. Options are: 
+"priority" for priority species; "pollinators" for 
+pollinators; and all to return all species in the group.}
 
-\item{region}{String. One of "UK", "GB", "England", "Wales", "Scotland", 
-or "NorthernIreland".}
+\item{region}{A character string or vector of strings. One of "UK", "GB", 
+"England", "Wales", "Scotland", or "NorthernIreland" per 
+taxonomic group.}
 
-\item{nSamps}{Numeric. Number of samples to extract from each species' 
-posterior distribution.}
+\item{nSamps}{Numeric or numeric vector. Number of samples to extract from 
+each species' posterior distribution.}
 
-\item{minObs}{Numeric. Threshold number of observation below which a 
-species is dropped from the sample.}
+\item{minObs}{Numeric or numeric vector. 
+Threshold number of observation below which a species is 
+dropped from the sample.}
 
-\item{write}{Logical. If TRUE then the outputs are written as a 
-.rdata file to outPath.}
+\item{write}{Logical or logical vector. If TRUE then the outputs are 
+written as a .rdata file to outPath.}
 
-\item{outPath}{String. Location to store the outputs if write = TRUE.}
+\item{outPath}{A character string or vector of strings. Location to store 
+the outputs if write = TRUE.}
 
-\item{clipBy}{String. One of "species" or "group" indicating whether to clip outputs by the first and last years of data for
-each species or for the whole group, respectively.}
+\item{clipBy}{A character string or vector of strings. One of "species" or 
+"group" indicating whether to clip outputs by the first and 
+last years of data for each species or for the whole group, 
+respectively.}
 }
 \value{
-A list of 1-row dataframes containing all arguments needed for applyFilters. applyFilters
-        can then be applied to this list to filter models outputs for different groups, which may 
+A list of 1-row dataframes containing all arguments needed for \code{applyFilters}. \code{applyFilters}
+        can then be applied to this list to filter models outputs for different taxonomic groups, which may 
         come from different rounds (e.g. Charlie's or later), for different regions, etc.
 }
 \description{
