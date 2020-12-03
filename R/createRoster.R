@@ -31,7 +31,7 @@
 #'                  pollinators; and all to return all species in the group.
 #'                  
 #' @param region A character string or vector of strings. One of "UK", "GB", 
-#'               "England", "Wales", "Scotland", or "NorthernIreland" per 
+#'               "ENGLAND", "WALES", "SCOTLAND", or "NORTHERN.IRELAND" per 
 #'               taxonomic group.
 #'
 #' @param nSamps Numeric or numeric vector. Number of samples to extract from 
@@ -93,6 +93,12 @@ createRoster <- function(index,
     # replace version with most recent model name
     ver <- ifelse(tdf$ver == "most_recent", mr$dataset_name, tdf$ver)
     
+  }
+ 
+  if (!region %in% c("GB", "UK", "ENGLAND", "SCOTLAND", "WALES", "NORTHERN.IRELAND")) {
+    
+    stop("Error: region must be be one of GB, UK, ENGLAND, SCOTLAND, WALES or NORTHERN.IRELAND")
+
   }
   
   df <- data.frame(index = index,
