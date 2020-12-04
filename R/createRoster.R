@@ -7,39 +7,53 @@
 #'              as vectors of equal length, with each element in the vectors corresponding to one 
 #'              call to \code{applyFilters}. 
 #'              
-#' @param index NO IDEA WHAT THIS IS FOR
+#' @param index Numeric. Index of the number of taxonomic groups to 
+#'              \code{applyFilters} across.
 #'
-#' @param modPath String. Location of the occupancy model outputs. 
+#' @param modPath A character string or vector of strings. Location(s) of the 
+#'                occupancy model outputs. 
 #'
-#' @param metPath String. 
+#' @param metaPath A character string or vector of strings. Location(s) of the 
+#'                 occupancy model metadata.
 #'   
-#' @param ver String. Which set of occupancy model outputs? E.g. Charlie's are "2017_Charlie".
+#' @param ver A character string or vector of strings. Which set of occupancy 
+#'            model outputs to use? Can be manually specified e.g. Charlie's 
+#'            are "2017_Charlie"; or to source the most recent model versions 
+#'            use "most_recent" (default), which uses model metadata stored at 
+#'            "/data-s3/most_recent_meta" to identify the most recent model 
+#'            version per taxonomic group.
+#'       
+#' @param group A character string or vector of strings. Taxonomic group(s), e.g. "Ants"
 #' 
-#' @param group SOMETHING
-#' 
-#' @param indicator String. Whether or not to subset species and, if so, based
-#'                  on what. Options are: "priority" for priority species; 
-#'                  "pollinators" for pollinators; and all to return all species in the group.
+#' @param indicator A character string or vector of strings. Whether or not to 
+#'                  subset species and, if so, based on what. Options are: 
+#'                  "priority" for priority species; "pollinators" for 
+#'                  pollinators; and all to return all species in the group.
 #'                  
-#' @param region String. One of "UK", "GB", "England", "Wales", "Scotland", 
-#'               or "NorthernIreland".
+#' @param region A character string or vector of strings. One of "UK", "GB", 
+#'               "ENGLAND", "WALES", "SCOTLAND", or "NORTHERN.IRELAND" per 
+#'               taxonomic group.
 #'
-#' @param nSamps Numeric. Number of samples to extract from each species' 
-#'               posterior distribution.
+#' @param nSamps Numeric or numeric vector. Number of samples to extract from 
+#'               each species' posterior distribution.
 #'               
-#' @param minObs Numeric. Threshold number of observation below which a 
-#'               species is dropped from the sample.
+#' @param minObs Numeric or numeric vector. 
+#'               Threshold number of observation below which a species is 
+#'               dropped from the sample.
 #'               
-#' @param write Logical. If TRUE then the outputs are written as a 
-#'              .rdata file to outPath.
+#' @param write Logical or logical vector. If TRUE then the outputs are 
+#'              written as a .rdata file to outPath.
 #'              
-#' @param outPath String. Location to store the outputs if write = TRUE. 
+#' @param outPath A character string or vector of strings. Location to store 
+#'                the outputs if write = TRUE. 
 #'  	  
-#' @param clipBy String. One of "species" or "group" indicating whether to clip outputs by the first and last years of data for
-#'        each species or for the whole group, respectively.
+#' @param clipBy A character string or vector of strings. One of "species" or 
+#'               "group" indicating whether to clip outputs by the first and 
+#'               last years of data for each species or for the whole group, 
+#'               respectively.
 #' 	  
-#' @return A list of 1-row dataframes containing all arguments needed for applyFilters. applyFilters
-#'         can then be applied to this list to filter models outputs for different groups, which may 
+#' @return A list of 1-row dataframes containing all arguments needed for \code{applyFilters}. \code{applyFilters}
+#'         can then be applied to this list to filter models outputs for different taxonomic groups, which may 
 #'         come from different rounds (e.g. Charlie's or later), for different regions, etc. 
 #'         
 #' @export
@@ -48,7 +62,7 @@
 createRoster <- function(index,
                          modPath = "/data-s3/occmods/", 
                          metaPath,
-                         ver = "2017_Charlie",
+                         ver = "most_recent",
                          group, 
                          indicator, 
                          region,
@@ -59,6 +73,33 @@ createRoster <- function(index,
                          clipBy = "species",
                          t0,
                          tn) {
+  
+  if("most_recent" %in% ver) {
+    
+    # find metadata for most recent models
+    mr_files <- list.files("/data-s3/most_recent_meta")
+    mr_files_ver <- gsub("metadata_", "", mr_files)
+    mr_files_ver <- as.numeric(gsub(".csv", "", mr_files_ver))
+    
+    # load metadata for most recent models
+    mr <- read.csv(paste0("/data-s3/most_recent_meta/", mr_files[which.max(mr_files_ver)]))
+    
+    # small data frame of ver and group
+    tdf <- data.frame(ver = ver, group = group)
+    
+    # subset metadata to matching taxonomic groups and most recent models
+    mr <- mr[mr$taxa %in% tdf$group & mr$most_recent == TRUE, ]
+    
+    # replace version with most recent model name
+    ver <- ifelse(tdf$ver == "most_recent", mr$dataset_name, tdf$ver)
+    
+  }
+ 
+  if (!region %in% c("GB", "UK", "ENGLAND", "SCOTLAND", "WALES", "NORTHERN.IRELAND")) {
+    
+    stop("Error: region must be be one of GB, UK, ENGLAND, SCOTLAND, WALES or NORTHERN.IRELAND")
+
+  }
   
   df <- data.frame(index = index,
                    modPath = modPath,
