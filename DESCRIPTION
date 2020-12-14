@@ -1,7 +1,7 @@
 Package: wrappeR
 Type: Package
 Title: What the Package Does (Title Case)
-Version: 0.1.4
+Version: 0.1.5
 Author: Rob Boyd
 Maintainer: Rob Boyd <robboy@ceh.ac.uk>
 Description: More about what it does (maybe more than one line)
@@ -14,5 +14,6 @@ RoxygenNote: 7.1.1
 Suggests: 
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    covr
 VignetteBuilder: knitr
