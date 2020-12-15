@@ -8,7 +8,7 @@
 #' @param roster String. A dataframe with columns: datPath, modPath, ver, indicator, region,
 #'               nSamps, minObs, write, outPath, clipBy, group (see \code{createRoster}). 
 #'               
-#' @param parallel Boolean. Should the operatoin run in parallel? If so then use n.cores-1.
+#' @param parallel Boolean. Should the operation run in parallel? If so then use n.cores-1.
 #' 	  
 #' @return A dataframe with processed model outputs to be passed to \code{calcMSI}.
 #'         
@@ -28,9 +28,15 @@ applyFilters <- function(roster, parallel = TRUE) {
                        inPath = roster$metaPath)
     
   } else {
-
+    
     keep <- gsub(".rdata", "", list.files(paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
-                            pattern = ".rdata")) 
+                                            pattern = ".rdata")) 
+    
+    if (roster$ver == "2020_bwars") {
+  
+      keep <- gsub("[[:digit:]]+", "", keep)
+      
+      keep <- unique(gsub("_", "", keep))
     
   }
   
@@ -64,10 +70,10 @@ applyFilters <- function(roster, parallel = TRUE) {
   
   stacked_samps <- tempStackFilter(input = "memory",
                                    dat = samp_post,
-                                   indata= NULL,
-                                   output_path=NULL, 
-                                   group_name=paste0(roster$indicator, roster$group), 
-                                   metadata=meta, 
+                                   indata = NULL,
+                                   output_path = NULL, 
+                                   group_name = paste0(roster$indicator, roster$group), 
+                                   metadata = meta, 
                                    region = roster$region,
                                    minObs = roster$minObs, 
                                    maxStartGap = 0, 

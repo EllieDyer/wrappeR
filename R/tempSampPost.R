@@ -26,14 +26,30 @@ tempSampPost <- function(indata = "../data/model_runs/",
   if(parallel & is.null(n.cores)) n.cores <- parallel::detectCores() - 1
   
   ### set up species list we want to loop though ###
+  
   spp.list <- list.files(indata, 
                          pattern = ".rdata") # species for which we have models
   
   spp.list <- gsub(".rdata", "", spp.list)
   
+  if(roster$ver == "2020_bwars") {
+    
+    spp.list <- gsub("[[:digit:]]+", "", spp.list)
+    
+    spp.list <- unique(gsub("_", "", spp.list))
+    
+  }
+  
   spp.list <- spp.list[tolower(spp.list) %in% tolower(keep)]
   
   samp_post <- NULL # create the stacked variable, will be used if combined_output is TRUE.
+  
+  # load_rdata function
+  # loads an RData file, and assigns it to an object name
+  load_rdata <- function(fileName) {
+    load(fileName)
+    get(ls()[ls() != "fileName"])
+  }
   
   # loop through species
   
@@ -42,15 +58,44 @@ tempSampPost <- function(indata = "../data/model_runs/",
     #print(species)
     out <- NULL
     raw_occ <- NULL
-    load(paste0(indata, species, ".rdata"))
     
-    nRec <- out$species_observations
+    if(roster$ver == "2020_bwars") {
+      
+      out_meta <- load_rdata(paste0(indata, species, "_2000_1.rdata")) # where metadata is stored for JASMIN models 
+      
+    } else {
+      
+      out_dat <- load_rdata(paste0(indata, species, ".rdata"))
+      out_meta <- out_dat
+      
+    }
+
+    nRec <- out_meta$species_observations
     print(paste(species, nRec))
     
     if(nRec >= minObs) {
-      raw_occ <- data.frame(out$BUGSoutput$sims.list[REGION_IN_Q])
+      
+      if(roster$ver == "2020_bwars") {
+        
+        out_dat <- load_rdata(paste0(indata, species, "_20000_1.rdata")) # where occupancy data is stored for JASMIN models 
+        raw_occ1 <- data.frame(out_dat$BUGSoutput$sims.list[REGION_IN_Q])
+        out_dat <- load_rdata(paste0(indata, species, "_20000_2.rdata")) # where occupancy data is stored for JASMIN models 
+        raw_occ2 <- data.frame(out_dat$BUGSoutput$sims.list[REGION_IN_Q])
+        out_dat <- load_rdata(paste0(indata, species, "_20000_3.rdata")) # where occupancy data is stored for JASMIN models 
+        raw_occ3 <- data.frame(out_dat$BUGSoutput$sims.list[REGION_IN_Q])
+        
+        raw_occ <- rbind(raw_occ1, raw_occ2, raw_occ3)
+        
+        rm(raw_occ1, raw_occ2, raw_occ3)
+        
+      } else {
+        
+        raw_occ <- data.frame(out_dat$BUGSoutput$sims.list[REGION_IN_Q])
+        
+      }
+      
       raw_occ <- raw_occ[sample(1:nrow(raw_occ), sample_n),]
-      colnames(raw_occ) <- paste("year_", out$min_year:out$max_year, sep = "")
+      colnames(raw_occ) <- paste("year_", out_meta$min_year:out_meta$max_year, sep = "")
       raw_occ$iteration <- 1:sample_n
       raw_occ$species <- species
       
@@ -60,7 +105,7 @@ tempSampPost <- function(indata = "../data/model_runs/",
       
       out1 <- raw_occ
       
-      dat <- out$model$data()
+      dat <- out_meta$model$data()
       dat <- data.frame(year = dat$Year,
                         rec = dat$y)
       
@@ -71,7 +116,7 @@ tempSampPost <- function(indata = "../data/model_runs/",
       
       lastMod <- tn
       
-      yrs <- sort(unique(dat$year[dat$rec == 1]), decreasing = F)
+      yrs <- sort(unique(dat$year[dat$rec == 1]), decreasing = FALSE)
       
       gaps <- NULL
       
@@ -96,9 +141,9 @@ tempSampPost <- function(indata = "../data/model_runs/",
   }
   
   if(parallel) outputs <- parallel::mclapply(spp.list, mc.cores = n.cores,
-                    combineSamps, minObs=minObs)
+                    combineSamps, minObs = minObs)
   else outputs <- lapply(spp.list, 
-                           combineSamps, minObs=minObs)
+                           combineSamps, minObs = minObs)
   
   
   if(parallel) samp_post <- parallel::mclapply(outputs, mc.cores = n.cores,
