@@ -32,7 +32,11 @@ applyFilters <- function(roster, parallel = TRUE) {
     keep <- gsub(".rdata", "", list.files(paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
                                             pattern = ".rdata")) 
     
-    if (roster$ver == "2020_bwars") {
+  }
+  
+  first_spp <- keep[[1]]
+  
+  if (substr(first_spp, (nchar(first_spp) + 1) - 1, nchar(first_spp)) %in% 1:3) {
   
       keep <- gsub("[[:digit:]]+", "", keep)
       

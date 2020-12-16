@@ -32,7 +32,10 @@ tempSampPost <- function(indata = "../data/model_runs/",
   
   spp.list <- gsub(".rdata", "", spp.list)
   
-  if(roster$ver == "2020_bwars") {
+  # to identify if the models are JASMIN based
+  first.spp <- spp.list[[1]]
+  
+  if(substr(first.spp, (nchar(first.spp) + 1) - 1, nchar(first.spp)) %in% 1:3) {
     
     spp.list <- gsub("[[:digit:]]+", "", spp.list)
     
@@ -59,7 +62,7 @@ tempSampPost <- function(indata = "../data/model_runs/",
     out <- NULL
     raw_occ <- NULL
     
-    if(roster$ver == "2020_bwars") {
+    if(substr(first.spp, (nchar(first.spp) + 1) - 1, nchar(first.spp)) %in% 1:3) {
       
       out_meta <- load_rdata(paste0(indata, species, "_2000_1.rdata")) # where metadata is stored for JASMIN models 
       
@@ -75,7 +78,7 @@ tempSampPost <- function(indata = "../data/model_runs/",
     
     if(nRec >= minObs) {
       
-      if(roster$ver == "2020_bwars") {
+      if(substr(first.spp, (nchar(first.spp) + 1) - 1, nchar(first.spp)) %in% 1:3) {
         
         out_dat <- load_rdata(paste0(indata, species, "_20000_1.rdata")) # where occupancy data is stored for JASMIN models 
         raw_occ1 <- data.frame(out_dat$BUGSoutput$sims.list[REGION_IN_Q])
