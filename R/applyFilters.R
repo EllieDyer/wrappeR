@@ -36,11 +36,12 @@ applyFilters <- function(roster, parallel = TRUE) {
   
   first_spp <- keep[[1]]
   
-  if (substr(first_spp, (nchar(first_spp) + 1) - 1, nchar(first_spp)) %in% 1:3) {
-  
-      keep <- gsub("[[:digit:]]+", "", keep)
+  if (substr(first_spp, (nchar(first_spp) + 1) - 2, nchar(first_spp)) %in% c("_1", "_2", "_3")) {
       
-      keep <- unique(gsub("_", "", keep))
+      keep <- gsub("(.*)_\\w+", "\\1", keep) # remove all after last underscore (e.g., "_1")
+      keep <- gsub("(.*)_\\w+", "\\1", keep) # remove all after last underscore (e.g., "_2000")
+      
+      keep <- unique(keep) # unique species names
     
   }
   
