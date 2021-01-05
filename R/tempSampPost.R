@@ -35,7 +35,7 @@ tempSampPost <- function(indata = "../data/model_runs/",
   # to identify if the models are JASMIN based
   first.spp <- spp.list[[1]]
   
-  if(substr(first_spp, (nchar(first_spp) + 1) - 2, nchar(first_spp)) %in% c("_1", "_2", "_3")) {
+  if(substr(first.spp, (nchar(first.spp) + 1) - 2, nchar(first.spp)) %in% c("_1", "_2", "_3")) {
     
     spp.list <- gsub("(.*)_\\w+", "\\1", spp.list) # remove all after last underscore (e.g., "_1")
     spp.list <- gsub("(.*)_\\w+", "\\1", spp.list) # remove all after last underscore (e.g., "_2000")
@@ -73,7 +73,7 @@ tempSampPost <- function(indata = "../data/model_runs/",
       out_meta <- out_dat
       
     }
-
+    
     nRec <- out_meta$species_observations
     print(paste(species, nRec))
     
@@ -138,29 +138,29 @@ tempSampPost <- function(indata = "../data/model_runs/",
       } else {
         gap <- 1
       } 
-
+      
       out2 <- data.frame(species, nRec, first, last, gap, firstMod, lastMod)
       return(list(out1, out2))
     } else return(NULL)
   }
   
   if(parallel) outputs <- parallel::mclapply(spp.list, mc.cores = n.cores,
-                    combineSamps, minObs = minObs)
+                                             combineSamps, minObs = minObs)
   else outputs <- lapply(spp.list, 
-                           combineSamps, minObs = minObs)
+                         combineSamps, minObs = minObs)
   
   
   if(parallel) samp_post <- parallel::mclapply(outputs, mc.cores = n.cores,
-                                   function(x)  y <- x[[1]])
+                                               function(x)  y <- x[[1]])
   else samp_post <- lapply(outputs, 
-                      function(x)  y <- x[[1]])
+                           function(x)  y <- x[[1]])
   
   samp_post <- do.call("rbind", samp_post)
   
   if(parallel) meta <- parallel::mclapply(outputs, mc.cores = n.cores,
-                              function(x) y <- x[[2]])
+                                          function(x) y <- x[[2]])
   else meta <- lapply(outputs, 
-                 function(x) y <- x[[2]])
+                      function(x) y <- x[[2]])
   
   meta <- do.call("rbind", meta)
   
