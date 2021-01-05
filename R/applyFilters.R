@@ -17,7 +17,12 @@
 
 applyFilters <- function(roster, parallel = TRUE) {
   
-  if (roster$indicator == "priority") {
+  if (roster$indicator == "all") {
+    
+    keep <- gsub(".rdata", "", list.files(paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
+                                          pattern = ".rdata")) 
+    
+  } else if (roster$indicator == "priority") {
     
     keep <- sampSubset("priority",
                        inPath = roster$metaPath) 
@@ -26,11 +31,6 @@ applyFilters <- function(roster, parallel = TRUE) {
     
     keep <- sampSubset("pollinators",
                        inPath = roster$metaPath)
-    
-  } else {
-    
-    keep <- gsub(".rdata", "", list.files(paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
-                                          pattern = ".rdata")) 
     
   }
   

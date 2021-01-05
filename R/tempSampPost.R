@@ -63,7 +63,7 @@ tempSampPost <- function(indata = "../data/model_runs/",
     out <- NULL
     raw_occ <- NULL
     
-    if(substr(first_spp, (nchar(first_spp) + 1) - 2, nchar(first_spp)) %in% c("_1", "_2", "_3")) {
+    if(substr(first.spp, (nchar(first.spp) + 1) - 2, nchar(first.spp)) %in% c("_1", "_2", "_3")) {
       
       out_meta <- load_rdata(paste0(indata, species, "_2000_1.rdata")) # where metadata is stored for JASMIN models 
       
@@ -79,7 +79,7 @@ tempSampPost <- function(indata = "../data/model_runs/",
     
     if(nRec >= minObs) {
       
-      if(substr(first_spp, (nchar(first_spp) + 1) - 2, nchar(first_spp)) %in% c("_1", "_2", "_3")) {
+      if(substr(first.spp, (nchar(first.spp) + 1) - 2, nchar(first.spp)) %in% c("_1", "_2", "_3")) {
         
         out_dat <- load_rdata(paste0(indata, species, "_20000_1.rdata")) # where occupancy data is stored for JASMIN models 
         raw_occ1 <- data.frame(out_dat$BUGSoutput$sims.list[REGION_IN_Q])
