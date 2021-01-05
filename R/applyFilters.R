@@ -30,35 +30,35 @@ applyFilters <- function(roster, parallel = TRUE) {
   } else {
     
     keep <- gsub(".rdata", "", list.files(paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
-                                            pattern = ".rdata")) 
+                                          pattern = ".rdata")) 
     
   }
   
   first_spp <- keep[[1]]
   
   if (substr(first_spp, (nchar(first_spp) + 1) - 2, nchar(first_spp)) %in% c("_1", "_2", "_3")) {
-      
-      keep <- gsub("(.*)_\\w+", "\\1", keep) # remove all after last underscore (e.g., "_1")
-      keep <- gsub("(.*)_\\w+", "\\1", keep) # remove all after last underscore (e.g., "_2000")
-      
-      keep <- unique(keep) # unique species names
+    
+    keep <- gsub("(.*)_\\w+", "\\1", keep) # remove all after last underscore (e.g., "_1")
+    keep <- gsub("(.*)_\\w+", "\\1", keep) # remove all after last underscore (e.g., "_2000")
+    
+    keep <- unique(keep) # unique species names
     
   }
   
   out <- tempSampPost(indata = paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
-                            keep = keep,
-                            output_path = NULL,
-                            REGION_IN_Q = paste0("psi.fs.r_", roster$region),
-                            sample_n = roster$nSamps,
-                            group_name = roster$group,
-                            combined_output = TRUE,
-                            #max_year_model = 2018,
-                            #min_year_model = 1970,
-                            write = FALSE,
-                            minObs = roster$minObs,
-                            t0 = roster$t0,
-                            tn = roster$tn,
-                            parallel = parallel)
+                      keep = keep,
+                      output_path = NULL,
+                      REGION_IN_Q = paste0("psi.fs.r_", roster$region),
+                      sample_n = roster$nSamps,
+                      group_name = roster$group,
+                      combined_output = TRUE,
+                      #max_year_model = 2018,
+                      #min_year_model = 1970,
+                      write = FALSE,
+                      minObs = roster$minObs,
+                      t0 = roster$t0,
+                      tn = roster$tn,
+                      parallel = parallel)
   
   samp_post <- out[[1]]
   
