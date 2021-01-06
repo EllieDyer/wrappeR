@@ -65,8 +65,22 @@ tempSampPost <- function(indata = "../data/model_runs/",
     
     if(substr(first.spp, (nchar(first.spp) + 1) - 2, nchar(first.spp)) %in% c("_1", "_2", "_3")) {
       
-      out_meta <- load_rdata(paste0(indata, species, "_2000_1.rdata")) # where metadata is stored for JASMIN models 
+      if(first.spp == "Bry_1_12000_1") { # THIS IS BAD CODING - but no easy way round it
+        
+        out_meta <- load_rdata(paste0(indata, species, "_4000_1.rdata")) # where metadata is stored for bryophyte JASMIN models 
+        
+      } else if(first.spp == "Abrothallus bertianus_10000_1") { # THIS IS BAD CODING - but no easy way round it
+        
+        out_meta <- load_rdata(paste0(indata, species, "_5000_1.rdata")) # where metadata is stored for lichen JASMIN models 
+        
+      }
       
+      else {
+        
+        out_meta <- load_rdata(paste0(indata, species, "_2000_1.rdata")) # where metadata is stored for JASMIN models 
+        
+      }
+
     } else {
       
       out_dat <- load_rdata(paste0(indata, species, ".rdata"))
