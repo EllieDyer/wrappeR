@@ -16,12 +16,20 @@
 #' 
 
 applyFilters <- function(roster, parallel = TRUE) {
+
+  data(speciesInfo)
   
   if (roster$indicator == "priority") {
+
+    keepInds <- which(!is.na(speciesInfo[, roster$region])) 
     
-    keep <- sampSubset("priority",
-                       inPath = roster$metaPath) 
+    ## use both latin names and concept codes to screen for priority species 
     
+    keep <- c(as.character(speciesInfo$Species[keepInds]), 
+              as.character(speciesInfo$concept[keepInds]))
+
+    keep <- keep[-which(is.na(keep))]
+
   } else if (roster$indicator == "pollinators") {
     
     keep <- sampSubset("pollinators",
@@ -34,6 +42,13 @@ applyFilters <- function(roster, parallel = TRUE) {
     
   }
   
+  ## select which species to drop based on scheme advice etc. These are removed by stackFilter
+  
+  drop <- which(!is.na(speciesInfo$Reason_not_included) & speciesInfo$Reason_not_included != "Didn't meet criteria")
+  
+  drop <- c(as.character(speciesInfo$Species[drop]), 
+            as.character(speciesInfo$concept[drop]))
+
   out <- tempSampPost(indata = paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
                             keep = keep,
                             output_path = NULL,
@@ -61,7 +76,7 @@ applyFilters <- function(roster, parallel = TRUE) {
     meta[,3] <- min(meta[,3])
     meta[,4] <- max(meta[,4])
   }
-  
+
   stacked_samps <- tempStackFilter(input = "memory",
                                    dat = samp_post,
                                    indata= NULL,
@@ -74,7 +89,7 @@ applyFilters <- function(roster, parallel = TRUE) {
                                    maxEndGap = 0,
                                    maxMiddleGap = 10, 
                                    keepSpecies = NULL, 
-                                   removeSpecies = NULL,
+                                   removeSpecies = drop,
                                    ClipFirst = TRUE, 
                                    ClipLast = TRUE)
   
