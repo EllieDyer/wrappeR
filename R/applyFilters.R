@@ -16,21 +16,29 @@
 #' 
 
 applyFilters <- function(roster, parallel = TRUE) {
+
+  data(speciesInfo)
   
-  if (roster$indicator == "all") {
+  if (roster$indicator == "priority") {
+
+    keepInds <- which(!is.na(speciesInfo[, roster$region])) 
     
-    keep <- gsub(".rdata", "", list.files(paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
-                                          pattern = ".rdata")) 
+    ## use both latin names and concept codes to screen for priority species 
     
-  } else if (roster$indicator == "priority") {
-    
-    keep <- sampSubset("priority",
-                       inPath = roster$metaPath) 
-    
+    keep <- c(as.character(speciesInfo$Species[keepInds]), 
+              as.character(speciesInfo$concept[keepInds]))
+
+    keep <- keep[-which(is.na(keep))]
+
   } else if (roster$indicator == "pollinators") {
     
     keep <- sampSubset("pollinators",
                        inPath = roster$metaPath)
+    
+  } else {
+
+    keep <- gsub(".rdata", "", list.files(paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
+                            pattern = ".rdata")) 
     
   }
   
@@ -38,13 +46,20 @@ applyFilters <- function(roster, parallel = TRUE) {
   
   if (substr(first_spp, (nchar(first_spp) + 1) - 2, nchar(first_spp)) %in% c("_1", "_2", "_3")) {
     
-    keep <- gsub("(.*)_\\w+", "\\1", keep) # remove all after last underscore (e.g., "_1")
-    keep <- gsub("(.*)_\\w+", "\\1", keep) # remove all after last underscore (e.g., "_2000")
+    keep <- gsub("(.*)_\\w+", "\\1", keep) # remove all after last underscore (e.g., chain "_1")
+    keep <- gsub("(.*)_\\w+", "\\1", keep) # remove all after last underscore (e.g., iteration "_2000")
     
     keep <- unique(keep) # unique species names
     
   }
   
+  ## select which species to drop based on scheme advice etc. These are removed by stackFilter
+  
+  drop <- which(!is.na(speciesInfo$Reason_not_included) & speciesInfo$Reason_not_included != "Didn't meet criteria")
+  
+  drop <- c(as.character(speciesInfo$Species[drop]), 
+            as.character(speciesInfo$concept[drop]))
+
   out <- tempSampPost(indata = paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
                       keep = keep,
                       output_path = NULL,
@@ -72,7 +87,7 @@ applyFilters <- function(roster, parallel = TRUE) {
     meta[,3] <- min(meta[,3])
     meta[,4] <- max(meta[,4])
   }
-  
+
   stacked_samps <- tempStackFilter(input = "memory",
                                    dat = samp_post,
                                    indata = NULL,
@@ -85,7 +100,7 @@ applyFilters <- function(roster, parallel = TRUE) {
                                    maxEndGap = 0,
                                    maxMiddleGap = 10, 
                                    keepSpecies = NULL, 
-                                   removeSpecies = NULL,
+                                   removeSpecies = drop,
                                    ClipFirst = TRUE, 
                                    ClipLast = TRUE)
   
