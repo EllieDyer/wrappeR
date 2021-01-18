@@ -46,7 +46,7 @@ calcMSI <- function(dat,
                      endYear = maxYr)
     
     ind <- BRCindicators::lambda_indicator( 
-      input=arr, 
+      input = arr, 
       index = 100, 
       threshold_sd = Inf, 
       threshold_Rhat = Inf, 
@@ -71,9 +71,22 @@ calcMSI <- function(dat,
     
   } else {
     
-    means <- aggregate(.~species, data=dat, mean)
+    # fudge factor for occupancy as log of 0 is undefined
+    fudgeOcc <- function(x, fudgeFac = 0.0001) {
+      x[x == 0] <- fudgeFac
+      x[x == 1] <- 1 - fudgeFac
+      return(x)
+    }
     
-    sds <- aggregate(.~species, data=dat, sd)
+    # year column names
+    year_cols <- colnames(dat)[grep("year", colnames(dat))]
+    
+    # log transform occupancy with adjustment for 1 and 0
+    dat[, year_cols] <- apply(dat[, year_cols], 2, function(x) {log(fudgeOcc(x))})
+    
+    means <- aggregate(. ~ species, data = dat, mean)
+    
+    sds <- aggregate(. ~ species, data = dat, sd)
     
     getSumStats <- function(stat) {
       
@@ -99,6 +112,7 @@ calcMSI <- function(dat,
     
     ind <- bma(data = inDat,
                seFromData = TRUE,
+               m.scale = "loge", # default to loge scale, based on log transformation of occupancy above
                ...)
     
     if (bmaInd != "prime") {
