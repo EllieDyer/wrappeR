@@ -84,9 +84,9 @@ calcMSI <- function(dat,
     # log transform occupancy with adjustment for 1 and 0
     dat[, year_cols] <- apply(dat[, year_cols], 2, function(x) {log(fudgeOcc(x))})
     
-    means <- aggregate(. ~ species, data = dat, mean)
+    means <- aggregate(. ~ species, data = dat, mean, na.action = na.pass)
     
-    sds <- aggregate(. ~ species, data = dat, sd)
+    sds <- aggregate(. ~ species, data = dat, sd, na.action = na.pass)
     
     getSumStats <- function(stat) {
       
@@ -108,7 +108,7 @@ calcMSI <- function(dat,
     inDat <- data.frame(means, 
                         se = se)
     
-    inDat$year <- as.numeric(inDat$year)
+    inDat$year <- as.numeric(gsub("year_", "", inDat$year))
     
     ind <- bma(data = inDat,
                seFromData = TRUE,
