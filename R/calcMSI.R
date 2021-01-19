@@ -5,7 +5,7 @@
 #'
 #' @param dat String. Object returned by \code{applyFilters}.
 #' 
-#' @param method String. Which indicator method to use. One of "lambda" or "BMA". 
+#' @param method String. Which indicator method to use. One of "lambda" or "bma". 
 #' 
 #' @param write Logical. Whether or not to write the outputs to  file.
 #'                  
@@ -18,7 +18,7 @@
 #' 
 #' @param ... String. Title for the indicator plot.Additional arguments to be passed to \code{BRCindicators::bma}
 #' 	  
-#' @return An list with elements indicator, short term assessment, long term assessment and plot.
+#' @return A list with elements indicator, short term assessment, long term assessment and plot.
 #'         
 #' @export
 #' 
@@ -81,6 +81,9 @@ calcMSI <- function(dat,
     # year column names
     year_cols <- colnames(dat)[grep("year", colnames(dat))]
     
+    # select necessary columns
+    dat <- dat[, c(year_cols, "species")]
+    
     # log transform occupancy with adjustment for 1 and 0
     dat[, year_cols] <- apply(dat[, year_cols], 2, function(x) {log(fudgeOcc(x))})
     
@@ -92,7 +95,7 @@ calcMSI <- function(dat,
       
       out <- stat[, -ncol(stat)]
       
-      out <- melt(out, 
+      out <- reshape2::melt(out, 
                   id.vars = "species",
                   variable.name = "year",
                   value.name = "index")
@@ -110,7 +113,7 @@ calcMSI <- function(dat,
     
     inDat$year <- as.numeric(gsub("year_", "", inDat$year))
     
-    ind <- bma(data = inDat,
+    ind <- BRCindicators::bma(data = inDat,
                seFromData = TRUE,
                m.scale = "loge", # default to loge scale, based on log transformation of occupancy above
                ...)
