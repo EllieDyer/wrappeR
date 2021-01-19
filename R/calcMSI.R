@@ -33,13 +33,13 @@ calcMSI <- function(dat,
   
   if (!method %in% c("lambda","bma")) stop("Method must be one of lambda or bma")
   
-  colnames(dat)[1:(ncol(dat) -2)] <- gsub("year_", "", colnames(dat[1:(ncol(dat) -2)]))
-  
-  minYr <- as.numeric(colnames(dat)[1])
-  
-  maxYr <- as.numeric(colnames(dat)[ncol(dat) - 2])
-  
   if (method == "lambda") {
+    
+    colnames(dat)[1:(ncol(dat) -2)] <- gsub("year_", "", colnames(dat[1:(ncol(dat) -2)]))
+    
+    minYr <- as.numeric(colnames(dat)[1])
+    
+    maxYr <- as.numeric(colnames(dat)[ncol(dat) - 2])
     
     arr <- sampArray(dat = dat,
                      startYear = minYr,
