@@ -28,9 +28,9 @@ tempSampPost <- function(indata = "../data/model_runs/",
   ### set up species list we want to loop though ###
   
   spp.list <- list.files(indata, 
-                         pattern = ".rdata") # species for which we have models
+                         pattern = ".rds") # species for which we have models
   
-  spp.list <- gsub(".rdata", "", spp.list)
+  spp.list <- gsub(".rds", "", spp.list)
   
   # to identify if the models are JASMIN based
   first.spp <- spp.list[[1]]
@@ -67,23 +67,23 @@ tempSampPost <- function(indata = "../data/model_runs/",
       
       if(first.spp == "Bry_1_12000_1") { # THIS IS BAD CODING - but no easy way round it
         
-        out_meta <- load_rdata(paste0(indata, species, "_4000_1.rdata")) # where metadata is stored for bryophyte JASMIN models 
+        out_meta <- load_rdata(paste0(indata, species, "_4000_1.rds")) # where metadata is stored for bryophyte JASMIN models 
         
       } else if(first.spp == "Abrothallus bertianus_10000_1") { # THIS IS BAD CODING - but no easy way round it
         
-        out_meta <- load_rdata(paste0(indata, species, "_5000_1.rdata")) # where metadata is stored for lichen JASMIN models 
+        out_meta <- load_rdata(paste0(indata, species, "_5000_1.rds")) # where metadata is stored for lichen JASMIN models 
         
       }
       
       else {
         
-        out_meta <- load_rdata(paste0(indata, species, "_2000_1.rdata")) # where metadata is stored for JASMIN models 
+        out_meta <- load_rdata(paste0(indata, species, "_2000_1.rds")) # where metadata is stored for JASMIN models 
         
       }
 
     } else {
       
-      out_dat <- load_rdata(paste0(indata, species, ".rdata"))
+      out_dat <- load_rdata(paste0(indata, species, ".rds"))
       out_meta <- out_dat
       
     }
@@ -95,11 +95,11 @@ tempSampPost <- function(indata = "../data/model_runs/",
       
       if(substr(first.spp, (nchar(first.spp) + 1) - 2, nchar(first.spp)) %in% c("_1", "_2", "_3")) {
         
-        out_dat <- load_rdata(paste0(indata, species, "_20000_1.rdata")) # where occupancy data is stored for JASMIN models 
+        out_dat <- load_rdata(paste0(indata, species, "_20000_1.rds")) # where occupancy data is stored for JASMIN models 
         raw_occ1 <- data.frame(out_dat$BUGSoutput$sims.list[REGION_IN_Q])
-        out_dat <- load_rdata(paste0(indata, species, "_20000_2.rdata")) # where occupancy data is stored for JASMIN models 
+        out_dat <- load_rdata(paste0(indata, species, "_20000_2.rds")) # where occupancy data is stored for JASMIN models 
         raw_occ2 <- data.frame(out_dat$BUGSoutput$sims.list[REGION_IN_Q])
-        out_dat <- load_rdata(paste0(indata, species, "_20000_3.rdata")) # where occupancy data is stored for JASMIN models 
+        out_dat <- load_rdata(paste0(indata, species, "_20000_3.rds")) # where occupancy data is stored for JASMIN models 
         raw_occ3 <- data.frame(out_dat$BUGSoutput$sims.list[REGION_IN_Q])
         
         raw_occ <- rbind(raw_occ1, raw_occ2, raw_occ3)
@@ -118,7 +118,7 @@ tempSampPost <- function(indata = "../data/model_runs/",
       raw_occ$species <- species
       
       if(combined_output != TRUE) {
-        write.csv(raw_occ, file = paste(output_path, gsub(".rdata", "" ,i), "_sample_", sample_n, "_post_", REGION_IN_Q, ".csv", sep = ""), row.names = FALSE)
+        write.csv(raw_occ, file = paste(output_path, gsub(".rds", "" ,i), "_sample_", sample_n, "_post_", REGION_IN_Q, ".csv", sep = ""), row.names = FALSE)
       } 
       
       out1 <- raw_occ
@@ -191,7 +191,7 @@ tempSampPost <- function(indata = "../data/model_runs/",
   colnames(meta) <- paste0(colnames(meta), "_r_", gsub("psi.fs.r_", "", REGION_IN_Q))
   
   if (write == TRUE) {
-    save(samp_post, file = paste(output_path, group_name, "_all_spp_sample_", sample_n, "_post_", REGION_IN_Q, ".rdata", sep = ""))
+    save(samp_post, file = paste(output_path, group_name, "_all_spp_sample_", sample_n, "_post_", REGION_IN_Q, ".rds", sep = ""))
   }
   
   return(list(samp_post, meta))

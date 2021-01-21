@@ -37,8 +37,8 @@ applyFilters <- function(roster, parallel = TRUE) {
     
   } else {
 
-    keep <- gsub(".rdata", "", list.files(paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
-                            pattern = ".rdata")) 
+    keep <- gsub(".rds", "", list.files(paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
+                            pattern = ".rds")) 
     
   }
   
@@ -107,7 +107,7 @@ applyFilters <- function(roster, parallel = TRUE) {
   if (roster$write == TRUE) {
     
     save(stacked_samps, file = paste0(roster$outPath, roster$group, "_", roster$indicator, 
-                                      "_", roster$region, ".rdata"))
+                                      "_", roster$region, ".rds"))
     
   }
   
