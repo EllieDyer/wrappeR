@@ -16,29 +16,29 @@
 #' 
 
 applyFilters <- function(roster, parallel = TRUE) {
-
+  
   data(speciesInfo)
   
   if (roster$indicator == "priority") {
-
+    
     keepInds <- which(!is.na(speciesInfo[, roster$region])) 
     
     ## use both latin names and concept codes to screen for priority species 
     
     keep <- c(as.character(speciesInfo$Species[keepInds]), 
               as.character(speciesInfo$concept[keepInds]))
-
+    
     keep <- keep[-which(is.na(keep))]
-
+    
   } else if (roster$indicator == "pollinators") {
     
     keep <- sampSubset("pollinators",
                        inPath = roster$metaPath)
     
   } else {
-
+    
     keep <- gsub(".rds", "", list.files(paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
-                            pattern = ".rds")) 
+                                        pattern = ".rds")) 
     
   }
   
@@ -59,7 +59,7 @@ applyFilters <- function(roster, parallel = TRUE) {
   
   drop <- c(as.character(speciesInfo$Species[drop]), 
             as.character(speciesInfo$concept[drop]))
-
+  
   out <- tempSampPost(indata = paste0(roster$modPath, roster$group, "/occmod_outputs/", roster$ver, "/"),
                       keep = keep,
                       output_path = NULL,
@@ -87,7 +87,7 @@ applyFilters <- function(roster, parallel = TRUE) {
     meta[,3] <- min(meta[,3])
     meta[,4] <- max(meta[,4])
   }
-
+  
   stacked_samps <- tempStackFilter(input = "memory",
                                    dat = samp_post,
                                    indata = NULL,
@@ -107,7 +107,7 @@ applyFilters <- function(roster, parallel = TRUE) {
   if (roster$write == TRUE) {
     
     save(stacked_samps, file = paste0(roster$outPath, roster$group, "_", roster$indicator, 
-                                      "_", roster$region, ".rds"))
+                                      "_", roster$region, ".rdata"))
     
   }
   

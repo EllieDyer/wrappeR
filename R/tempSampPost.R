@@ -80,10 +80,10 @@ tempSampPost <- function(indata = "../data/model_runs/",
         out_meta <- load_rdata(paste0(indata, species, "_2000_1.rds")) # where metadata is stored for JASMIN models 
         
       }
-
+      
     } else {
       
-      out_dat <- load_rdata(paste0(indata, species, ".rds"))
+      out_dat <- readRDS(paste0(indata, species, ".rds"))
       out_meta <- out_dat
       
     }
@@ -118,7 +118,7 @@ tempSampPost <- function(indata = "../data/model_runs/",
       raw_occ$species <- species
       
       if(combined_output != TRUE) {
-        write.csv(raw_occ, file = paste(output_path, gsub(".rds", "" ,i), "_sample_", sample_n, "_post_", REGION_IN_Q, ".csv", sep = ""), row.names = FALSE)
+        write.csv(raw_occ, file = paste(output_path, gsub(".rds", "" , i), "_sample_", sample_n, "_post_", REGION_IN_Q, ".csv", sep = ""), row.names = FALSE)
       } 
       
       out1 <- raw_occ
@@ -191,7 +191,7 @@ tempSampPost <- function(indata = "../data/model_runs/",
   colnames(meta) <- paste0(colnames(meta), "_r_", gsub("psi.fs.r_", "", REGION_IN_Q))
   
   if (write == TRUE) {
-    save(samp_post, file = paste(output_path, group_name, "_all_spp_sample_", sample_n, "_post_", REGION_IN_Q, ".rds", sep = ""))
+    save(samp_post, file = paste(output_path, group_name, "_all_spp_sample_", sample_n, "_post_", REGION_IN_Q, ".rdata", sep = ""))
   }
   
   return(list(samp_post, meta))
