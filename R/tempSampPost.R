@@ -112,7 +112,12 @@ tempSampPost <- function(indata = "../data/model_runs/",
         
       }
       
-      raw_occ <- raw_occ[sample(1:nrow(raw_occ), sample_n),]
+      #following 4 lines added by ED(NJBI)
+      if(sample_n > nrow(raw_occ)){
+        raw_occ <- raw_occ[sample(1:nrow(raw_occ), sample_n),]
+      }else{
+        sample_n <- nrow(raw_occ)} # raw_occ does not get sampled but revised sample_n is used later
+      
       colnames(raw_occ) <- paste("year_", out_meta$min_year:out_meta$max_year, sep = "")
       raw_occ$iteration <- 1:sample_n
       raw_occ$species <- species

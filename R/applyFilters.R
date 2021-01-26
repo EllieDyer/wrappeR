@@ -113,9 +113,4 @@ applyFilters <- function(roster, parallel = TRUE) {
   
   return(stacked_samps)
   
-  #following 4 lines added by NJBI
-  if(sample_n > nrow(raw_occ)){
-     raw_occ <- raw_occ[sample(1:nrow(raw_occ), sample_n),]
-     }else{
-       sample_n <- nrow(raw_occ)} # raw_occ does not get sampled but revised sample_n is used later
 }
